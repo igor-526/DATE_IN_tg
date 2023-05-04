@@ -1,0 +1,6 @@
+from handlers.menu import register_handlers_menu
+from handlers.reg.reg_profile import register_handlers_reg_profile
+from handlers.reg.reg_name import register_handlers_reg_name
+from handlers.reg.reg_bdate import register_handlers_reg_bdate
+from handlers.reg.reg_sex import register_handlers_reg_sex
+from handlers.reg.reg_geo import register_handlers_reg_geo
