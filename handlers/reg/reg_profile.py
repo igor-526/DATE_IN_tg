@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from dbase import chk_reg
 from keyboards import reg_profile_keys
 from FSM import Reg
-from funcs import start_registration, do_invalid, reg_ask_name
+from funcs import do_invalid, reg_ask_name, vk_ask_id
 
 
 async def first_time(event: types.Message):
@@ -10,7 +10,7 @@ async def first_time(event: types.Message):
 
 
 async def via_vk(event: types.Message):
-    await event.answer(text='Функционал пока не поддерживается')
+    await vk_ask_id(event)
 
 
 async def invalid(event: types.Message):

@@ -1,6 +1,19 @@
 from aiogram import types
-from FSM import Reg
-from keyboards import reg_profile_keys, yesnoback_keys, sex_keys, back_keys, geo_keys
+from aiogram.dispatcher import FSMContext
+from FSM import Reg, ViaVK
+from keyboards import (reg_profile_keys,
+                       yesnoback_keys,
+                       sex_keys,
+                       back_keys,
+                       geo_keys,
+                       backskip_keys,
+                       readyback_keys,
+                       sex_f_keys)
+from funcs.purposes import gen_purposes
+from dbase import add_profile, add_settings, add_profile_photos
+from datetime import date
+from funcs.profile import generate_profile_forview
+from funcs.menu import send_menu
 
 
 async def do_invalid(event: types.Message, keys):
@@ -11,7 +24,7 @@ async def do_invalid(event: types.Message, keys):
 
 
 async def start_registration(event: types.Message):
-    await event.answer(text="Подскажите, у Вас уже есть профиль на сайте или в TG?",
+    await event.answer(text="Подскажите, у Вас уже есть профиль на сайте или в ВК?",
                        reply_markup=reg_profile_keys)
     await Reg.profile.set()
 
@@ -53,3 +66,168 @@ async def reg_ask_geo(event: types.Message):
                             'Это необходимо для того, чтобы подбирать тебе анкеты поближе',
                        reply_markup=geo_keys)
     await Reg.geo.set()
+
+
+async def reg_ask_photos(event: types, state: FSMContext):
+    async with state.proxy() as data:
+        data['photos'] = []
+    await event.answer(text='Супер! Отправь мне фотографии (Не более 11), которые '
+                            'будешь гордо демонстрировать другим пользователям сервиса, после чего нажми "Готово"\n'
+                            'Если хочется пользоваться без фотографий (что мы очень не рекомендуем) или '
+                            'отправить их потом, нажми кнопку "Готово"',
+                       reply_markup=readyback_keys)
+    await Reg.photo.set()
+
+
+async def reg_ask_description(event: types.Message):
+    await event.answer(text="Готово! Почти последний шаг - напиши мне какой-нибудь текст, который заинтересует любого "
+                            "и заставит нажать кнопку лайка!\n"
+                            "Если хочется придумать позже, или вообще не добавлять (что мы так же не рекомендуем!),"
+                            " просто нажми кнопку 'Пропустить'",
+                       reply_markup=backskip_keys)
+    await Reg.description.set()
+
+
+async def reg_ask_purposes(event: types.Message):
+    msg = 'Последний шаг - определиться с целями!\nПожалуйста, через запятую или пробел ' \
+          'перечислите номера целей\n\n'
+    msg += await gen_purposes()
+    await event.answer(text=msg,
+                       reply_markup=back_keys,
+                       parse_mode=types.ParseMode.HTML)
+    await Reg.purposes.set()
+
+
+async def reg_ask_f_sex(event: types.Message):
+    await event.answer(text='С твоим профилем всё!\nОсталось определиться с настройками поиска\n'
+                            'Тут гораздо меньше. Детальнее потом можно будет настроить в меню')
+    await event.answer(text='Кого мы будем искать?',
+                       reply_markup=sex_f_keys)
+    await Reg.f_sex.set()
+
+
+async def reg_ask_age_min(event: types.Message):
+    await event.answer(text='С этим определились!\n'
+                            'Осталось понять, какой будет минимальный возраст для поиска',
+                       reply_markup=back_keys)
+    await Reg.f_age_min.set()
+
+
+async def reg_ask_age_max(event: types.Message):
+    await event.answer(text='Прекрасный выбор!\n'
+                            'А максимальный?',
+                       reply_markup=back_keys)
+    await Reg.f_age_max.set()
+
+
+async def reg_finish(event: types.Message, state: FSMContext):
+    await event.answer("Завершение регистрации..")
+    # try:
+    #     async with state.proxy() as data:
+    #         datelist = data['bdate'].split('.')
+    #         pr_id = await add_profile(tg_id=event.from_user.id,
+    #                                   tg_url=event.from_user.url,
+    #                                   tg_nick=event.from_user.username,
+    #                                   name=data['name'],
+    #                                   bdate=date(year=int(datelist[2]), month=int(datelist[1]), day=int(datelist[0])),
+    #                                   sex=data['sex'],
+    #                                   city=data['city'],
+    #                                   geo_lat=data['latitude'],
+    #                                   geo_long=data['longitude'],
+    #                                   description=data['description'])
+    #         find_f = 1 if 1 in data['sex_f'] else 0
+    #         find_m = 1 if 2 in data['sex_f'] else 0
+    #         purp1 = 1 if 1 in data['purposes'] else 0
+    #         purp2 = 1 if 2 in data['purposes'] else 0
+    #         purp3 = 1 if 3 in data['purposes'] else 0
+    #         purp4 = 1 if 4 in data['purposes'] else 0
+    #         purp5 = 1 if 5 in data['purposes'] else 0
+    #         await add_settings(tg_id=event.from_user.id,
+    #                            age_min=data['age_min'],
+    #                            age_max=data['age_max'],
+    #                            find_f=find_f,
+    #                            find_m=find_m,
+    #                            purp1=purp1,
+    #                            purp2=purp2,
+    #                            purp3=purp3,
+    #                            purp4=purp4,
+    #                            purp5=purp5
+    #                            )
+    #     await add_profile_photos(event.from_user.id, data['photos'])
+    #     profmsg = await generate_profile_forview(pr_id, 0)
+    #     msg1 = 'Готово! Вот так выглядит твой профиль:\n\n' + profmsg['msg1']
+    #     if profmsg['m_ph']:
+    #         await event.answer_photo(photo=profmsg['m_ph'], caption=msg1, parse_mode=types.ParseMode.HTML)
+    #     else:
+    #         await event.answer(text=msg1, parse_mode=types.ParseMode.HTML)
+    #     if profmsg['o_ph']:
+    #         media = types.MediaGroup()
+    #         counter = 1
+    #         for photo in profmsg['o_ph']:
+    #             if counter == 1:
+    #                 media.attach_photo(photo=photo, caption=profmsg['msg2'])
+    #                 counter += 1
+    #             else:
+    #                 media.attach_photo(photo=photo)
+    #         await event.answer_media_group(media=media)
+    #
+    #     else:
+    #         if profmsg['msg2']:
+    #             await event.answer(profmsg['msg2'])
+    #     await send_menu(event)
+    # except Exception as exx:
+    #     await event.answer("Что-то пошло не так\n"
+    #                        "Пожалуйста, попробуйте позже")
+    #     await state.finish()
+    async with state.proxy() as data:
+        datelist = data['bdate'].split('.')
+        pr_id = await add_profile(tg_id=event.from_user.id,
+                                  tg_url=event.from_user.url,
+                                  tg_nick=event.from_user.username,
+                                  name=data['name'],
+                                  bdate=date(year=int(datelist[2]), month=int(datelist[1]), day=int(datelist[0])),
+                                  sex=data['sex'],
+                                  city=data['city'],
+                                  geo_lat=data['latitude'],
+                                  geo_long=data['longitude'],
+                                  description=data['description'])
+        find_f = 1 if 1 in data['sex_f'] else 0
+        find_m = 1 if 2 in data['sex_f'] else 0
+        purp1 = 1 if 1 in data['purposes'] else 0
+        purp2 = 1 if 2 in data['purposes'] else 0
+        purp3 = 1 if 3 in data['purposes'] else 0
+        purp4 = 1 if 4 in data['purposes'] else 0
+        purp5 = 1 if 5 in data['purposes'] else 0
+        await add_settings(tg_id=event.from_user.id,
+                           age_min=data['age_min'],
+                           age_max=data['age_max'],
+                           find_f=find_f,
+                           find_m=find_m,
+                           purp1=purp1,
+                           purp2=purp2,
+                           purp3=purp3,
+                           purp4=purp4,
+                           purp5=purp5
+                           )
+    await add_profile_photos(event.from_user.id, data['photos'])
+    profmsg = await generate_profile_forview(pr_id, 0)
+    msg1 = 'Готово! Вот так выглядит твой профиль:\n\n' + profmsg['msg1']
+    if profmsg['m_ph']:
+        await event.answer_photo(photo=profmsg['m_ph'], caption=msg1, parse_mode=types.ParseMode.HTML)
+    else:
+        await event.answer(text=msg1, parse_mode=types.ParseMode.HTML)
+    if profmsg['o_ph']:
+        media = types.MediaGroup()
+        counter = 1
+        for photo in profmsg['o_ph']:
+            if counter == 1:
+                media.attach_photo(photo=photo, caption=profmsg['msg2'])
+                counter += 1
+            else:
+                media.attach_photo(photo=photo)
+        await event.answer_media_group(media=media)
+
+    else:
+        if profmsg['msg2']:
+            await event.answer(profmsg['msg2'])
+    await send_menu(event)

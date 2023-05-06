@@ -1,8 +1,26 @@
 from datetime import date, datetime
 from models import Profile, Settings, Images
+import config
+from vkwave.bots import SimpleLongPollBot
+from vkwave.bots.utils.uploaders import PhotoUploader
+from create_bot import bot
 
 
-async def add_profile(vk_id: int,
+async def uploadphotos(file_id: list):
+    vk_bot = SimpleLongPollBot(tokens=config.vk_token, group_id=config.group_id)
+    uploader = PhotoUploader(api_context=vk_bot.api_context)
+    ready = []
+    for photo in file_id:
+        file = await bot.get_file(photo)
+        url = bot.get_file_url(file['file_path'])
+        url_vk = await uploader.get_attachment_from_link(link=url, peer_id=28964076)
+        ready.append({'tg_id': photo, 'url': url, 'url_vk': url_vk})
+    return ready
+
+
+async def add_profile(tg_id: int,
+                      tg_nick: str,
+                      tg_url: str,
                       name: str,
                       bdate: date,
                       sex: int,
@@ -10,13 +28,13 @@ async def add_profile(vk_id: int,
                       geo_lat: float,
                       geo_long: float,
                       description: str):
-    profile = Profile(vk_id=vk_id, name=name, bdate=bdate, sex=sex, city=city, description=description, status='active',
-                      geo_lat=geo_lat, geo_long=geo_long)
+    profile = Profile(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url, name=name, bdate=bdate, sex=sex, city=city,
+                      description=description, status='active', geo_lat=geo_lat, geo_long=geo_long)
     await profile.create()
     return profile.id
 
 
-async def add_settings(vk_id: int,
+async def add_settings(tg_id: int,
                        age_min: int,
                        age_max: int,
                        find_m: int,
@@ -27,16 +45,26 @@ async def add_settings(vk_id: int,
                        purp4: int,
                        purp5: int,
                        ):
-    profile = await Profile.query.where(Profile.vk_id == vk_id).gino.first()
-    settings = Settings(id = profile.id, age_min=age_min, age_max=age_max, find_m=find_m, find_f=find_f, purp1=purp1,
+    profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
+    settings = Settings(id=profile.id, age_min=age_min, age_max=age_max, find_m=find_m, find_f=find_f, purp1=purp1,
                         purp2=purp2, purp3=purp3, purp4=purp4, purp5=purp5, created=date.today(),
                         last_usage=datetime.now())
     await settings.create()
 
 
-async def add_profile_photos(vk_id: int,
+async def add_profile_photos(tg_id: int,
                              photos: list):
-    profile = await Profile.query.where(Profile.vk_id == vk_id).gino.first()
-    for photo in photos:
-        image = Images(profile=profile.id, url=photo["url"], url_vk=photo["vk_url"], description='profile_photo')
+    profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
+    ready = await uploadphotos(photos)
+    for photo in ready:
+        image = Images(profile=profile.id, url=photo["url"], url_vk=photo["url_vk"], tg_id=photo["tg_id"],
+                       description='profile_photo')
         await image.create()
+
+
+async def add_tg_id(prof_id: int,
+                    tg_id: int,
+                    tg_nick: str,
+                    tg_url: str):
+    profile = await Profile.query.where(Profile.id == prof_id).gino.first()
+    await profile.update(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url).apply()

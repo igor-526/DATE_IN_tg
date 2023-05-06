@@ -29,10 +29,12 @@ class Profile(BaseModel):
     phone = Column(String, nullable=True, unique=True)
     vk_id = Column(Integer, nullable=True, unique=True)
     tg_id = Column(Integer, nullable=True, unique=True)
+    tg_nick = Column(String, nullable=True)
+    tg_url = Column(String, nullable=True)
     name = Column(String, nullable=False)
     bdate = Column(Date, nullable=False)
     sex = Column(Integer, nullable=False)
-    city = Column(String, nullable=False)
+    city = Column(String, nullable=True)
     geo_lat = Column(Float, nullable=False)
     geo_long = Column(Float, nullable=False)
     description = Column(String, nullable=True)
@@ -71,8 +73,9 @@ class Images(BaseModel):
 
     id = Column(Integer, primary_key=True)
     profile = Column(Integer, nullable=False)
-    url = Column(String, nullable=False)
+    url = Column(String, nullable=True)
     url_vk = Column(String, nullable=True)
+    tg_id = Column(String, nullable=True)
     description = Column(String, nullable=False)
 
     query: sql.select

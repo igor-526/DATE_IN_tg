@@ -20,3 +20,9 @@ class Reg(StatesGroup):
     f_sex = State()
     f_age_min = State()
     f_age_max = State()
+
+
+class ViaVK(StatesGroup):
+    id = State()
+    confirm = State()
+    code = State()

@@ -20,11 +20,27 @@ if __name__ == "__main__":
                           register_handlers_reg_name,
                           register_handlers_reg_bdate,
                           register_handlers_reg_sex,
-                          register_handlers_reg_geo)
+                          register_handlers_reg_geo,
+                          register_handlers_reg_photo,
+                          register_handlers_reg_description,
+                          register_handlers_reg_purposes,
+                          register_handlers_reg_sex_f,
+                          register_handlers_reg_f_age,
+                          register_handlers_viavk_id,
+                          register_handlers_viavk_confirm,
+                          register_handlers_viavk_code)
     register_handlers_menu(dp)
     register_handlers_reg_profile(dp)
     register_handlers_reg_name(dp)
     register_handlers_reg_bdate(dp)
     register_handlers_reg_sex(dp)
     register_handlers_reg_geo(dp)
+    register_handlers_reg_photo(dp)
+    register_handlers_reg_description(dp)
+    register_handlers_reg_purposes(dp)
+    register_handlers_reg_sex_f(dp)
+    register_handlers_reg_f_age(dp)
+    register_handlers_viavk_id(dp)
+    register_handlers_viavk_confirm(dp)
+    register_handlers_viavk_code(dp)
     executor.start_polling(dp, on_startup=on_startup)

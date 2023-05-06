@@ -1,7 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from FSM import Reg
-from funcs import reg_ask_sex
+from funcs import reg_ask_sex, get_city, reg_ask_photos
 from keyboards import geo_keys
 
 
@@ -13,7 +13,8 @@ async def valid(event: types.Location, state: FSMContext):
     async with state.proxy() as data:
         data['latitude'] = event['location']['latitude']
         data['longitude'] = event['location']['longitude']
-        print(data)
+        data['city'] = await get_city(event['location']['latitude'], event['location']['longitude'])
+    await reg_ask_photos(event, state)
 
 
 async def invalid(event: types.Message):

@@ -1,9 +1,8 @@
 from aiogram import types, Dispatcher
-from dbase import chk_reg
-from keyboards import reg_profile_keys, yesnoback_keys
+from keyboards import yesnoback_keys
 from FSM import Reg
 from aiogram.dispatcher import FSMContext
-from funcs import start_registration, do_invalid, reg_ask_name, reg_ask_bdate, reg_ask_name_manual
+from funcs import start_registration, do_invalid, reg_ask_bdate, reg_ask_name_manual
 from validators import valid_name
 
 

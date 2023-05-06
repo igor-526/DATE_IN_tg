@@ -13,9 +13,9 @@ async def generate_profile_forview(id, dist):
     for purpose in purposes:
         msg1 += f'&#10004;{purpose}\n'
     msg2 = profile["description"]
-    att1 = profile['main_photo']
-    att2 = profile['other_photos']
-    return {'msg1': msg1, 'msg2': msg2, 'att1': att1, 'att2': att2}
+    main_photo = profile['main_photo']
+    other_photos = profile['other_photos']
+    return {'msg1': msg1, 'msg2': msg2, 'm_ph': main_photo, 'o_ph': other_photos}
 
 
 async def generate_profile_forsettings(vk_id):

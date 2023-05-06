@@ -2,13 +2,15 @@ from aiogram import types, Dispatcher
 from dbase import chk_reg
 from keyboards import registration_keys
 from FSM import Menu
-from funcs import start_registration, do_invalid
+from funcs import start_registration, do_invalid, send_menu
 
 
 async def startmessage(event: types.Message):
     check = await chk_reg(event.from_user.id)
     if check:
-        pass
+        if check.status == 'active':
+            await event.answer(f'Добро пожаловать, {check.name}')
+            await send_menu(event)
     else:
         await event.answer(text="Добро пожаловать в DATE IN!\n"
                                 "Для начала использования необходимо зарегистрироваться",

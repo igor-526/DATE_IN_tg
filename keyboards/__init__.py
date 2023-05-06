@@ -5,3 +5,8 @@ from keyboards.yesnoback import yesnoback_keys
 from keyboards.sex import sex_keys
 from keyboards.back import back_keys
 from keyboards.geo import geo_keys
+from keyboards.backskip import backskip_keys
+from keyboards.readyback import readyback_keys
+from keyboards.sex_f import sex_f_keys
+from keyboards.menu import menu_keys
+from keyboards.code import code_keys
