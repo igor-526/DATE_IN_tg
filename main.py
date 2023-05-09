@@ -1,7 +1,7 @@
 from aiogram.utils import executor
 
 import config
-from models import db_bind, db_reset
+from models import db_bind
 from create_bot import dp
 
 
@@ -9,9 +9,6 @@ async def on_startup(_):
     print("Connecting to database...")
     await db_bind()
     print("Connected to database succesfully!\n")
-    if config.reset_db == 1:
-        await db_reset()
-        print("DATABASE WAS RESETED\n")
     print("Bot started succesfully!")
 
 if __name__ == "__main__":

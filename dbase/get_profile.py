@@ -4,7 +4,7 @@ from models import Profile, Settings, Images
 async def get_prof_forview(id):
     profile = await Profile.query.where(Profile.id == id).gino.first()
     settings = await Settings.query.where(Profile.id == id).gino.first()
-    photos = await Images.query.where(Images.profile == id).where(Images.description == 'profile_photo').gino.all()
+    photos = await Images.query.where(Images.profile_id == id).where(Images.description == 'profile_photo').gino.all()
     counter = 0
     images = []
     main_photo = None

@@ -1,20 +1,15 @@
 from datetime import date, datetime
 from models import Profile, Settings, Images
 import config
-from vkwave.bots import SimpleLongPollBot
-from vkwave.bots.utils.uploaders import PhotoUploader
 from create_bot import bot
 
 
 async def uploadphotos(file_id: list):
-    vk_bot = SimpleLongPollBot(tokens=config.vk_token, group_id=config.group_id)
-    uploader = PhotoUploader(api_context=vk_bot.api_context)
     ready = []
     for photo in file_id:
         file = await bot.get_file(photo)
         url = bot.get_file_url(file['file_path'])
-        url_vk = await uploader.get_attachment_from_link(link=url, peer_id=28964076)
-        ready.append({'tg_id': photo, 'url': url, 'url_vk': url_vk})
+        ready.append({'tg_id': photo, 'url': url})
     return ready
 
 
@@ -57,7 +52,7 @@ async def add_profile_photos(tg_id: int,
     profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
     ready = await uploadphotos(photos)
     for photo in ready:
-        image = Images(profile=profile.id, url=photo["url"], url_vk=photo["url_vk"], tg_id=photo["tg_id"],
+        image = Images(profile_id=profile.id, url=photo["url"], tg_id=photo["tg_id"],
                        description='profile_photo')
         await image.create()
 

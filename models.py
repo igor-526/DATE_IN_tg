@@ -23,7 +23,7 @@ class BaseModel(db.Model):
 
 
 class Profile(BaseModel):
-    __tablename__ = "profile"
+    __tablename__ = "api_profile"
 
     id = Column(Integer, primary_key=True)
     phone = Column(String, nullable=True, unique=True)
@@ -44,7 +44,7 @@ class Profile(BaseModel):
 
 
 class Settings(BaseModel):
-    __tablename__ = "settings"
+    __tablename__ = "api_settings"
 
     id = Column(Integer, primary_key=True)
     age_min = Column(Integer, nullable=False)
@@ -69,10 +69,10 @@ class Settings(BaseModel):
 
 
 class Images(BaseModel):
-    __tablename__ = "images"
+    __tablename__ = "api_images"
 
     id = Column(Integer, primary_key=True)
-    profile = Column(Integer, nullable=False)
+    profile_id = Column(Integer, nullable=False)
     url = Column(String, nullable=True)
     url_vk = Column(String, nullable=True)
     tg_id = Column(String, nullable=True)
@@ -82,7 +82,7 @@ class Images(BaseModel):
 
 
 class Offerlist(BaseModel):
-    __tablename__ = "offerlist"
+    __tablename__ = "api_offerlist"
 
     id = Column(Integer, primary_key=True)
     profile = Column(Integer, nullable=False)
@@ -93,7 +93,7 @@ class Offerlist(BaseModel):
 
 
 class Matchlist(BaseModel):
-    __tablename__ = "matchlist"
+    __tablename__ = "api_matchlist"
 
     id = Column(Integer, primary_key=True)
     profile_1 = Column(Integer, nullable=False)
@@ -103,7 +103,7 @@ class Matchlist(BaseModel):
 
 
 class Complaintlist(BaseModel):
-    __tablename__ = "complaintlist"
+    __tablename__ = "api_complaintlist"
 
     id = Column(Integer, primary_key=True)
     profile = Column(Integer, nullable=False)
@@ -120,9 +120,3 @@ class Complaintlist(BaseModel):
 async def db_bind():
     await db.set_bind(config.POSTGRES_URI)
     print("Connected to Database")
-
-
-async def db_reset():
-    await db.gino.drop_all()
-    await db.gino.create_all()
-    print('Reseted')
