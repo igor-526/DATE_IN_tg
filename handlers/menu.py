@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from dbase import chk_reg
 from keyboards import registration_keys
 from FSM import Menu
-from funcs import start_registration, do_invalid, send_menu
+from funcs import start_registration, do_invalid, send_menu, show_myprofile
 
 
 async def startmessage(event: types.Message):
@@ -18,6 +18,10 @@ async def startmessage(event: types.Message):
         await Menu.registration.set()
 
 
+async def profile(event: types.Message):
+    await show_myprofile(event)
+
+
 async def registration(event: types.Message):
     await start_registration(event)
 
@@ -28,5 +32,6 @@ async def registration_invalid(event: types.Message):
 
 def register_handlers_menu(dp: Dispatcher):
     dp.register_message_handler(startmessage)
+    dp.register_message_handler(profile, state=Menu.menu, regexp='Мой профиль')
     dp.register_message_handler(registration, state=Menu.registration, regexp='Регистрация')
     dp.register_message_handler(registration_invalid, state=Menu.registration)

@@ -18,15 +18,15 @@ async def generate_profile_forview(id, dist):
     return {'msg1': msg1, 'msg2': msg2, 'm_ph': main_photo, 'o_ph': other_photos}
 
 
-async def generate_profile_forsettings(vk_id):
-    profile = await get_prof_forsetting(vk_id)
+async def generate_profile_forsettings(tg_id):
+    profile = await get_prof_forsetting(tg_id)
     if profile["find_f"] == 1 and profile["find_m"] == 1:
         findsex = 'девушек и мужчин'
     elif profile["find_f"] == 1:
         findsex = 'только девушек'
     elif profile["find_m"] == 1:
         findsex = 'только мужчин'
-    msg1 = f'&#127380;{profile["id"]}' \
+    msg1 = f'&#127380;{profile["id"]}\n' \
            f'Имя: {profile["name"]}\n' \
            f'Дата рождения: {profile["bdate"]}\n' \
            f'Город: {profile["city"]}\n' \
@@ -37,9 +37,7 @@ async def generate_profile_forsettings(vk_id):
     purposes = await get_purposes_from_list(profile['purposes'])
     for purpose in purposes:
         msg1 += f'&#10004;{purpose}\n'
-    msg1 += '\nОсновная фотография:'
-    msg2 = f'Описание: {profile["description"]}\n' \
-           f'Ост. фотографии:'
+    msg2 = f'Описание: {profile["description"]}\n\nХотите что-нибудь поменять?'
     att1 = profile['main_photo']
     att2 = profile['other_photos']
     return {'msg1': msg1, 'msg2': msg2, 'att1': att1, 'att2': att2}

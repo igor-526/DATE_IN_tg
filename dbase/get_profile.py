@@ -3,7 +3,7 @@ from models import Profile, Settings, Images
 
 async def get_prof_forview(id):
     profile = await Profile.query.where(Profile.id == id).gino.first()
-    settings = await Settings.query.where(Profile.id == id).gino.first()
+    settings = await Settings.query.where(Settings.profile_id == id).gino.first()
     photos = await Images.query.where(Images.profile_id == id).where(Images.description == 'profile_photo').gino.all()
     counter = 0
     images = []
@@ -31,19 +31,19 @@ async def get_prof_forview(id):
     return result
 
 
-async def get_prof_forsetting(vk_id):
-    profile = await Profile.query.where(Profile.vk_id == vk_id).gino.first()
-    settings = await Settings.query.where(Profile.id == profile.id).gino.first()
-    photos = await Images.query.where(Images.profile == profile.id).where(Images.description == 'profile_photo').gino.all()
+async def get_prof_forsetting(tg_id):
+    profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
+    settings = await Settings.query.where(Settings.profile_id == profile.id).gino.first()
+    photos = await Images.query.where(Images.profile_id == profile.id).where(Images.description == 'profile_photo').gino.all()
     counter = 0
     images = []
     main_photo = None
     for photo in photos:
         counter += 1
         if counter == 1:
-            main_photo = photo.url_vk
+            main_photo = photo.tg_id if photo.tg_id else photo.url
         else:
-            images.append(photo.url_vk)
+            images.append(photo.tg_id if photo.tg_id else photo.url)
     purposes = []
     if settings.purp1 == 1:
         purposes.append(1)

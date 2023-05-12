@@ -10,3 +10,4 @@ from keyboards.readyback import readyback_keys
 from keyboards.sex_f import sex_f_keys
 from keyboards.menu import menu_keys
 from keyboards.code import code_keys
+from keyboards.profile import profile_keys

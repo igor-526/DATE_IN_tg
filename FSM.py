@@ -26,3 +26,19 @@ class ViaVK(StatesGroup):
     id = State()
     confirm = State()
     code = State()
+
+
+class Profile(StatesGroup):
+    show = State()
+    name = State()
+    bdate = State()
+    sex = State()
+    purposes = State()
+    geo = State()
+    description = State()
+    del_photos = State()
+    add_photos = State()
+    age_min = State()
+    age_max = State()
+    sex_f = State()
+    delete = State()

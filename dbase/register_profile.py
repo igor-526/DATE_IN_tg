@@ -61,4 +61,4 @@ async def add_tg_id(prof_id: int,
                     tg_nick: str,
                     tg_url: str):
     profile = await Profile.query.where(Profile.id == prof_id).gino.first()
-    await profile.update(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url).apply()
+    await profile.update(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url, status='active').apply()
