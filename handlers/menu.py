@@ -1,5 +1,6 @@
 from aiogram import types, Dispatcher
 from dbase import chk_reg
+from dbase.fakeprofile import add_fake_profile
 from keyboards import registration_keys
 from FSM import Menu
 from funcs import start_registration, do_invalid, send_menu, show_myprofile
@@ -30,8 +31,14 @@ async def registration_invalid(event: types.Message):
     await do_invalid(event, registration_keys)
 
 
+async def reg_fake(event: types.Message):
+    await add_fake_profile()
+
+
+
 def register_handlers_menu(dp: Dispatcher):
     dp.register_message_handler(startmessage)
     dp.register_message_handler(profile, state=Menu.menu, regexp='Мой профиль')
+    dp.register_message_handler(profile, state=Menu.menu, regexp='Фейк')
     dp.register_message_handler(registration, state=Menu.registration, regexp='Регистрация')
     dp.register_message_handler(registration_invalid, state=Menu.registration)
