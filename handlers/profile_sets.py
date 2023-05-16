@@ -2,6 +2,7 @@ from aiogram import types, Dispatcher
 from keyboards import profile_keys
 from FSM import Profile
 from aiogram.dispatcher import FSMContext
+from dbase import clean_offerlist, get_profile_id
 from funcs import (do_invalid,
                    send_menu,
                    f_ch_name,
@@ -18,6 +19,8 @@ from funcs import (do_invalid,
 
 
 async def back(event: types.Message):
+    pr_id = await get_profile_id(event.from_user.id)
+    await clean_offerlist(pr_id)
     await send_menu(event)
 
 

@@ -35,8 +35,10 @@ if __name__ == "__main__":
                           register_handlers_prch_description,
                           register_handlers_prch_photos,
                           register_handlers_prch_age_f,
-                          register_handlers_prch_sex_f)
+                          register_handlers_prch_sex_f,
+                          register_handlers_search)
     register_handlers_menu(dp)
+    register_handlers_search(dp)
     register_handlers_profile(dp)
     register_handlers_prch_name(dp)
     register_handlers_prch_bdate(dp)

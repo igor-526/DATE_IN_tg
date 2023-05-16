@@ -42,3 +42,9 @@ class Profile(StatesGroup):
     age_max = State()
     sex_f = State()
     delete = State()
+
+
+class Search(StatesGroup):
+    searching = State()
+    complaint_cat = State()
+    complaint_desc = State()

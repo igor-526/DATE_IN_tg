@@ -12,3 +12,4 @@ from keyboards.menu import menu_keys
 from keyboards.code import code_keys
 from keyboards.profile import profile_keys
 from keyboards.cancel import cancel_keys
+from keyboards.search import search_keys

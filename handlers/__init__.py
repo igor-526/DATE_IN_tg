@@ -22,3 +22,4 @@ from handlers.profile.prch_description import register_handlers_prch_description
 from handlers.profile.prch_photos import register_handlers_prch_photos
 from handlers.profile.prch_age_f import register_handlers_prch_age_f
 from handlers.profile.prch_sex_f import register_handlers_prch_sex_f
+from handlers.search_engine import register_handlers_search

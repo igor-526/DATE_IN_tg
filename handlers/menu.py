@@ -1,9 +1,10 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher import FSMContext
 from dbase import chk_reg
 from dbase.fakeprofile import add_fake_profile
-from keyboards import registration_keys
-from FSM import Menu
-from funcs import start_registration, do_invalid, send_menu, show_myprofile
+from keyboards import registration_keys, search_keys
+from FSM import Menu, Search
+from funcs import start_registration, do_invalid, send_menu, show_myprofile, search
 
 
 async def startmessage(event: types.Message):
@@ -19,6 +20,12 @@ async def startmessage(event: types.Message):
         await Menu.registration.set()
 
 
+async def start_search(event: types.Message, state: FSMContext):
+    await Search.searching.set()
+    await event.answer(text="Уже ищу..", reply_markup=search_keys)
+    await search(event, state)
+
+
 async def profile(event: types.Message):
     await show_myprofile(event)
 
@@ -32,13 +39,14 @@ async def registration_invalid(event: types.Message):
 
 
 async def reg_fake(event: types.Message):
-    await add_fake_profile()
-
+    for _ in range(0, 10):
+        await add_fake_profile()
 
 
 def register_handlers_menu(dp: Dispatcher):
     dp.register_message_handler(startmessage)
     dp.register_message_handler(profile, state=Menu.menu, regexp='Мой профиль')
-    dp.register_message_handler(profile, state=Menu.menu, regexp='Фейк')
+    dp.register_message_handler(start_search, state=Menu.menu, regexp='Начать поиск')
+    dp.register_message_handler(reg_fake, state=Menu.menu, regexp='Фейк')
     dp.register_message_handler(registration, state=Menu.registration, regexp='Регистрация')
     dp.register_message_handler(registration_invalid, state=Menu.registration)
