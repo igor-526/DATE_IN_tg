@@ -1,4 +1,6 @@
-from models import Offerlist
+import datetime
+
+from models import Offerlist, Matchlist
 import requests
 import config
 
@@ -16,7 +18,7 @@ async def get_search_profile(prof):
         if status == 'ready':
             offer = await Offerlist.query.where(Offerlist.profile_id == prof).where(
                 Offerlist.status == 'not_offered').gino.first()
-            return {'id':offer.offer_id, 'dist': offer.dist}
+            return {'id': offer.offer_id, 'dist': offer.dist}
         elif status == 'no_profiles':
             return 'no_profiles'
 
@@ -25,6 +27,19 @@ async def profile_like(prof_id, offer_id):
     offer = await Offerlist.query.where(Offerlist.profile_id == prof_id).where(
         Offerlist.offer_id == offer_id).gino.first()
     await offer.update(status='like').apply()
+    check_match = await Offerlist.query.where(Offerlist.profile_id == offer_id).where(
+        Offerlist.offer_id == prof_id).where(Offerlist.status == 'like').gino.first()
+    if check_match:
+        match1 = Matchlist(profile_1_id=check_match.profile_id, profile_2_id=check_match.offer_id,
+                           date=datetime.date.today(), status='not_showed')
+        match2 = Matchlist(profile_1_id=check_match.offer_id, profile_2_id=check_match.profile_id,
+                           date=datetime.date.today(), status='not_showed')
+        await match1.create()
+        await match2.create()
+        return 'match'
+    else:
+        return 'pass'
+
 
 
 async def profile_pass(prof_id, offer_id):

@@ -48,3 +48,8 @@ class Search(StatesGroup):
     searching = State()
     complaint_cat = State()
     complaint_desc = State()
+
+
+class Matches(StatesGroup):
+    new_matches = State()
+    old_matches = State()

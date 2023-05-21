@@ -3,19 +3,20 @@ from funcs.bdate_to_info import get_bdate_info
 from funcs.purposes import get_purposes_from_list
 
 
-async def generate_profile_forview(id, dist):
+async def generate_profile_forview(id, dist=None):
     profile = await get_prof_forview(id)
     bdate_info = await get_bdate_info(profile["bdate"])
-    msg1 = f'{profile["name"]}, {bdate_info["age"]} (&#127380;{profile["id"]})\n' \
-           f'{bdate_info["zodiac"]}, {dist} км от тебя\n' \
-           f'{profile["city"]}\n\nЦели:\n'
+    msg1 = f'{profile["name"]}, {bdate_info["age"]} (&#127380;{profile["id"]})\n'
+    msg1 += f'{dist} км от тебя\n' if dist else ''
+    msg1 += f'{profile["city"]}\n\nЦели:\n'
     purposes = await get_purposes_from_list(profile['purposes'])
     for purpose in purposes:
         msg1 += f'&#10004;{purpose}\n'
     msg2 = profile["description"]
     main_photo = profile['main_photo']
     other_photos = profile['other_photos']
-    return {'msg1': msg1, 'msg2': msg2, 'm_ph': main_photo, 'o_ph': other_photos}
+    contacts = {'cont_vk': profile['cont_vk'], 'cont_tg': profile['cont_tg']}
+    return {'msg1': msg1, 'msg2': msg2, 'm_ph': main_photo, 'o_ph': other_photos, 'contacts': contacts}
 
 
 async def generate_profile_forsettings(tg_id):
@@ -41,3 +42,10 @@ async def generate_profile_forsettings(tg_id):
     att1 = profile['main_photo']
     att2 = profile['other_photos']
     return {'msg1': msg1, 'msg2': msg2, 'att1': att1, 'att2': att2}
+
+
+async def get_id_from_message(message):
+    message = message.split('(')[1]
+    message = message.split(')')[0]
+    id = message[1:]
+    return int(id)

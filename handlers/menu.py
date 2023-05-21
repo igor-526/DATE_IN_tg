@@ -1,10 +1,9 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-from dbase import chk_reg
-from dbase.fakeprofile import add_fake_profile
-from keyboards import registration_keys, search_keys
+from dbase import chk_reg, get_profile_id
+from keyboards import registration_keys, search_keys, match_keys
 from FSM import Menu, Search
-from funcs import start_registration, do_invalid, send_menu, show_myprofile, search
+from funcs import start_registration, do_invalid, send_menu, show_myprofile, search, show_new_match
 
 
 async def startmessage(event: types.Message):
@@ -26,6 +25,13 @@ async def start_search(event: types.Message, state: FSMContext):
     await search(event, state)
 
 
+async def go_matches(event: types.Message, state: FSMContext):
+    pr_id = await get_profile_id(event.from_user.id)
+    await event.answer(text='Секунду..', reply_markup=match_keys)
+    await state.update_data({'pr_id': pr_id})
+    await show_new_match(event, state)
+
+
 async def profile(event: types.Message):
     await show_myprofile(event)
 
@@ -38,15 +44,18 @@ async def registration_invalid(event: types.Message):
     await do_invalid(event, registration_keys)
 
 
-async def reg_fake(event: types.Message):
-    for _ in range(0, 10):
-        await add_fake_profile()
+async def menu_invalid(event: types.Message):
+    await event.answer(text="Я вас не понимаю &#128532;\n"
+                            "Пожалуйста, выберите действие на клавиатуре\n"
+                            "Если её нет, используйте /menu для выхода в главное меню",
+                       parse_mode=types.ParseMode.HTML)
 
 
 def register_handlers_menu(dp: Dispatcher):
     dp.register_message_handler(startmessage)
     dp.register_message_handler(profile, state=Menu.menu, regexp='Мой профиль')
     dp.register_message_handler(start_search, state=Menu.menu, regexp='Начать поиск')
-    dp.register_message_handler(reg_fake, state=Menu.menu, regexp='Фейк')
+    dp.register_message_handler(go_matches, state=Menu.menu, regexp='Пары')
     dp.register_message_handler(registration, state=Menu.registration, regexp='Регистрация')
+    dp.register_message_handler(menu_invalid, state=Menu.menu)
     dp.register_message_handler(registration_invalid, state=Menu.registration)

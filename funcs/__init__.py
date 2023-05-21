@@ -6,3 +6,4 @@ from funcs.menu import *
 from funcs.auth_via_vk import *
 from funcs.profile_settings import *
 from funcs.searching import search
+from funcs.matches_show import *

@@ -1,10 +1,11 @@
 from gino import Gino
-from sqlalchemy import Column, String, ForeignKey, DateTime, Integer, Date, sql, Float
+from sqlalchemy import Column, String, ForeignKey, DateTime, Integer, Date, sql, Float, BigInteger
 import sqlalchemy as sa
 from typing import List
 import config
 
 db = Gino()
+
 
 class BaseModel(db.Model):
     __abstract__ = True
@@ -21,14 +22,13 @@ class BaseModel(db.Model):
         return f"<{model} {values_str}>"
 
 
-
 class Profile(BaseModel):
     __tablename__ = "api_profile"
 
     id = Column(Integer, primary_key=True)
     phone = Column(String, nullable=True, unique=True)
     vk_id = Column(Integer, nullable=True, unique=True)
-    tg_id = Column(Integer, nullable=True, unique=True)
+    tg_id = Column(BigInteger, nullable=True, unique=True)
     tg_nick = Column(String, nullable=True)
     tg_url = Column(String, nullable=True)
     name = Column(String, nullable=False)
@@ -101,6 +101,7 @@ class Matchlist(BaseModel):
     profile_1_id = Column(Integer, ForeignKey("api_profile.id"), nullable=False)
     profile_2_id = Column(Integer, ForeignKey("api_profile.id"), nullable=False)
     date = Column(Date, nullable=False)
+    status = Column(String, nullable=True)
 
     query: sql.select
 

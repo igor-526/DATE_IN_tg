@@ -25,9 +25,11 @@ async def get_prof_forview(id):
         purposes.append(4)
     if settings.purp5 == 1:
         purposes.append(5)
+    cont_vk = f'https://vk.com/id{profile.vk_id}' if profile.vk_id else None
+    cont_tg = profile.tg_url if profile.tg_url else None
     result = {'id': profile.id, 'name': profile.name, 'city': profile.city, 'bdate': profile.bdate,
               'description': profile.description, 'main_photo': main_photo, 'other_photos': images,
-              'purposes': purposes}
+              'purposes': purposes, 'cont_vk': cont_vk, 'cont_tg': cont_tg}
     return result
 
 
@@ -60,3 +62,12 @@ async def get_prof_forsetting(tg_id):
               'purposes': purposes, 'sex': profile.sex, 'age_min': settings.age_min, 'age_max': settings.age_max,
               'find_m': settings.find_m, 'find_f': settings.find_f}
     return result
+
+
+async def get_photos(pr_id):
+    photos = await Images.query.where(Images.profile_id == pr_id).where(
+        Images.description == 'profile_photo').gino.all()
+    result = []
+    for photo in photos:
+        result.append(photo.tg_id if photo.tg_id else photo.url)
+    return result[1:]
