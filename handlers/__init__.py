@@ -22,5 +22,10 @@ from handlers.profile.prch_description import register_handlers_prch_description
 from handlers.profile.prch_photos import register_handlers_prch_photos
 from handlers.profile.prch_age_f import register_handlers_prch_age_f
 from handlers.profile.prch_sex_f import register_handlers_prch_sex_f
+from handlers.profile.prch_more_desc import register_handlers_prch_more_desc
+from handlers.profile.prmd_height import register_handlers_prmd_height
 from handlers.search_engine import register_handlers_search
 from handlers.match_engine import register_handlers_matches
+from handlers.complaints.comp_category import register_handlers_comp_category
+from handlers.complaints.comp_description import register_handlers_comp_description
+from handlers.complaints.comp_confirm import register_handlers_comp_confirm

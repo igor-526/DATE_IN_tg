@@ -1,12 +1,13 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-from dbase import profile_like, profile_pass, get_photos
+from dbase import profile_like, profile_pass, get_photos, get_description
 from FSM import Search
-from funcs import send_menu, search, get_id_from_message
+from funcs import send_menu, search, get_id_from_message, comp_ask_cat
 from create_bot import bot
 
 
 async def like_profile(event: types.Message, state: FSMContext):
+    await event.delete()
     data = await state.get_data()
     match_status = await profile_like(data['id'], data['offer'])
     await search(event, state)
@@ -15,12 +16,14 @@ async def like_profile(event: types.Message, state: FSMContext):
 
 
 async def pass_profile(event: types.Message, state: FSMContext):
+    await event.delete()
     data = await state.get_data()
     await profile_pass(data['id'], data['offer'])
     await search(event, state)
 
 
 async def menu(event: types.Message):
+    await event.delete()
     await send_menu(event)
 
 
@@ -36,8 +39,26 @@ async def all_photos(event: types.CallbackQuery):
         await event.answer("У пользователя нет больше фото")
 
 
+async def description(event: types.CallbackQuery):
+    pr_id = await get_id_from_message(event.message.caption)
+    desc = await get_description(pr_id)
+    if desc["description"]:
+        await bot.send_message(chat_id=event.from_user.id,
+                               text=f'{desc["description"]}')
+    else:
+        await event.answer(text="У профиля нет описания")
+
+
+async def complaint(event: types.CallbackQuery, state: FSMContext):
+    to_id = await get_id_from_message(event.message.caption)
+    await state.update_data({'compl_to': to_id})
+    await comp_ask_cat(event.from_user.id)
+
+
 def register_handlers_search(dp: Dispatcher):
     dp.register_message_handler(like_profile, state=Search.searching, regexp='\U00002764')
     dp.register_message_handler(pass_profile, state=Search.searching, regexp='\U0001F494')
     dp.register_callback_query_handler(all_photos, state=Search.searching, text='all_photos')
+    dp.register_callback_query_handler(description, state=Search.searching, text='description')
+    dp.register_callback_query_handler(complaint, state=Search.searching, text='complaint')
     dp.register_message_handler(menu, state=Search.searching, regexp='Меню')

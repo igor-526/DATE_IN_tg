@@ -6,14 +6,15 @@ import config
 
 
 async def get_search_profile(prof):
-    offer = await Offerlist.query.where(Offerlist.profile_id == prof).where(Offerlist.status == 'not_offered').gino.first()
+    offer = await Offerlist.query.where(Offerlist.profile_id == prof).where(
+        Offerlist.status == 'not_offered').gino.first()
     if offer:
         return {'id':offer.offer_id, 'dist': offer.dist}
     else:
         requrl = f'{config.api_url}/do_offers/'
         params = {"id": prof,
                   "auth_token": config.api_token}
-        resp = requests.post(url=requrl, json=params)
+        resp = requests.post(url=requrl, json=params, verify=False)
         status = resp.json()['status']
         if status == 'ready':
             offer = await Offerlist.query.where(Offerlist.profile_id == prof).where(
@@ -39,7 +40,6 @@ async def profile_like(prof_id, offer_id):
         return 'match'
     else:
         return 'pass'
-
 
 
 async def profile_pass(prof_id, offer_id):

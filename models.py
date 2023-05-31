@@ -38,6 +38,12 @@ class Profile(BaseModel):
     geo_lat = Column(Float, nullable=False)
     geo_long = Column(Float, nullable=False)
     description = Column(String, nullable=True)
+    height = Column(Integer, nullable=True)
+    habits = Column(String, nullable=True)
+    children = Column(String, nullable=True)
+    busy = Column(String, nullable=True)
+    hobby = Column(String, nullable=True)
+    animals = Column(String, nullable=True)
     status = Column(String, nullable=False)
 
     query: sql.select

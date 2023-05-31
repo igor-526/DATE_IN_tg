@@ -32,7 +32,9 @@ async def go_matches(event: types.Message, state: FSMContext):
     await show_new_match(event, state)
 
 
-async def profile(event: types.Message):
+async def profile(event: types.Message, state: FSMContext):
+    pr_id = await get_profile_id(event.from_user.id)
+    await state.update_data({'pr_id': pr_id})
     await show_myprofile(event)
 
 
@@ -53,8 +55,8 @@ async def menu_invalid(event: types.Message):
 
 def register_handlers_menu(dp: Dispatcher):
     dp.register_message_handler(startmessage)
-    dp.register_message_handler(profile, state=Menu.menu, regexp='Мой профиль')
-    dp.register_message_handler(start_search, state=Menu.menu, regexp='Начать поиск')
+    dp.register_message_handler(profile, state=Menu.menu, regexp='Профиль')
+    dp.register_message_handler(start_search, state=Menu.menu, regexp='Поиск')
     dp.register_message_handler(go_matches, state=Menu.menu, regexp='Пары')
     dp.register_message_handler(registration, state=Menu.registration, regexp='Регистрация')
     dp.register_message_handler(menu_invalid, state=Menu.menu)

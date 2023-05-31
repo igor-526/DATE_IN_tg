@@ -71,3 +71,9 @@ async def get_photos(pr_id):
     for photo in photos:
         result.append(photo.tg_id if photo.tg_id else photo.url)
     return result[1:]
+
+
+async def get_description(pr_id):
+    profile = await Profile.query.where(Profile.id == pr_id).gino.first()
+    result = {'description': profile.description}
+    return result

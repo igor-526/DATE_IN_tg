@@ -115,3 +115,8 @@ async def upd_delete_profile(tg_id):
         await photo.delete()
     await settings.delete()
     await profile.delete()
+
+
+async def upd_d_height(pr_id, height=None):
+    profile = await Profile.query.where(Profile.id == pr_id).gino.first()
+    await profile.update(height=height).apply()

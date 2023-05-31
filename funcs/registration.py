@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from FSM import Reg
+from FSM import Reg, Profile
 from keyboards import (reg_profile_keys,
                        yesnoback_keys,
                        sex_keys,
@@ -8,12 +8,11 @@ from keyboards import (reg_profile_keys,
                        geo_keys,
                        backskip_keys,
                        readyback_keys,
-                       sex_f_keys)
+                       sex_f_keys,
+                       profile_inline_keys)
 from funcs.purposes import gen_purposes
 from dbase import add_profile, add_settings, add_profile_photos
 from datetime import date
-from funcs.profile import generate_profile_forview
-from funcs.menu import send_menu
 import requests
 import config
 from threading import Thread
@@ -127,7 +126,7 @@ def upload_to_vk(pr_id):
     requrl = f'{config.api_url}/vkphoto/'
     params = {"id": pr_id,
               "auth_token": config.api_token}
-    resp = requests.post(url=requrl, json=params)
+    resp = requests.post(url=requrl, json=params, verify=False)
     print(resp.text)
 
 
@@ -169,26 +168,13 @@ async def reg_finish(event: types.Message, state: FSMContext):
         upl = Thread(target=upload_to_vk, args=(pr_id, ), daemon=True)
         upl.start()
         upl.join(0.0)
-        profmsg = await generate_profile_forview(pr_id, 0)
-        msg1 = 'Готово! Вот так выглядит твой профиль:\n\n' + profmsg['msg1']
-        if profmsg['m_ph']:
-            await event.answer_photo(photo=profmsg['m_ph'], caption=msg1, parse_mode=types.ParseMode.HTML)
-        else:
-            await event.answer(text=msg1, parse_mode=types.ParseMode.HTML)
-        if profmsg['o_ph']:
-            media = types.MediaGroup()
-            counter = 1
-            for photo in profmsg['o_ph']:
-                if counter == 1:
-                    media.attach_photo(photo=photo, caption=profmsg['msg2'])
-                    counter += 1
-                else:
-                    media.attach_photo(photo=photo)
-            await event.answer_media_group(media=media)
-        else:
-            if profmsg['msg2']:
-                await event.answer(profmsg['msg2'])
-        await send_menu(event)
+        keysmod = profile_inline_keys
+        await event.answer(text="Ура! Всё получилось!\n"
+                                "Ты так же можешь добавить следующие данные о себе:",
+                           reply_markup=keysmod.add(types.InlineKeyboardButton(text='ПЕРЕЙТИ В МЕНЮ',
+                                                                               callback_data='menu')))
+        await state.update_data({'pr_id': pr_id})
+        await Profile.desc_more.set()
     except Exception as exx:
         await event.answer("Что-то пошло не так\n"
                            "Пожалуйста, попробуйте позже")

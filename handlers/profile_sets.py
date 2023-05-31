@@ -15,7 +15,8 @@ from funcs import (do_invalid,
                    f_ch_del_photos,
                    f_ch_age_f,
                    f_ch_sex_f,
-                   f_ch_delete)
+                   f_ch_delete,
+                   f_ch_d)
 
 
 async def back(event: types.Message):
@@ -64,6 +65,10 @@ async def ch_sex_f(event: types.Message):
     await f_ch_sex_f(event)
 
 
+async def desc_more(event: types.Message):
+    await f_ch_d(event)
+
+
 async def del_profile(event: types.Message):
     await f_ch_delete(event)
 
@@ -77,6 +82,7 @@ def register_handlers_profile(dp: Dispatcher):
     dp.register_message_handler(ch_name, state=Profile.show, regexp='Имя')
     dp.register_message_handler(ch_bdate, state=Profile.show, regexp='Дата рождения')
     dp.register_message_handler(ch_sex_f, state=Profile.show, regexp='Изменить пол поиска')
+    dp.register_message_handler(desc_more, state=Profile.show, regexp='Дополнительно')
     dp.register_message_handler(ch_sex, state=Profile.show, regexp='Пол')
     dp.register_message_handler(ch_purposes, state=Profile.show, regexp='Цели')
     dp.register_message_handler(ch_geo, state=Profile.show, regexp='Геопозиция')

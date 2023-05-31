@@ -1,19 +1,25 @@
 from aiogram import types
 from FSM import Profile
 from aiogram.dispatcher import FSMContext
+from create_bot import bot
 from keyboards import (profile_keys,
                        cancel_keys,
                        sex_keys,
                        geo_keys,
                        yesno_keys,
                        sex_f_keys,
-                       readyback_keys)
+                       readyback_keys,
+                       profile_inline_keys,
+                       backin_keys,
+                       children_keys,
+                       busy_keys)
 from funcs.purposes import gen_purposes
 from dbase import dates_info, upd_c_photos
 from funcs.profile import generate_profile_forsettings
 
 
 async def do_invalid(event: types.Message, keys):
+    await event.delete()
     await event.answer(text="Я вас не понимаю &#128532;\n"
                             "Пожалуйста, выберите действие на клавиатуре",
                        reply_markup=keys,
@@ -141,3 +147,18 @@ async def f_ch_delete(event: types.Message):
                             "удалён. Продолжить?",
                        reply_markup=yesno_keys)
     await Profile.delete.set()
+
+
+async def f_ch_d(event: types.Message):
+    await event.answer(text='Чем больше информации - тем лучше!',
+                       reply_markup=types.ReplyKeyboardRemove())
+    await event.answer(text="Какую дополнительную информацию хочешь указать?",
+                       reply_markup=profile_inline_keys)
+    await Profile.desc_more.set()
+
+
+async def f_d_height(event: types.CallbackQuery):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="Напиши мне свой рост:",
+                                 reply_markup=backin_keys)
+    await Profile.d_m_height.set()
