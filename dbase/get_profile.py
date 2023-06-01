@@ -28,7 +28,7 @@ async def get_prof_forview(id):
     cont_vk = f'https://vk.com/id{profile.vk_id}' if profile.vk_id else None
     cont_tg = profile.tg_url if profile.tg_url else None
     result = {'id': profile.id, 'name': profile.name, 'city': profile.city, 'bdate': profile.bdate,
-              'description': profile.description, 'main_photo': main_photo, 'other_photos': images,
+              'main_photo': main_photo,
               'purposes': purposes, 'cont_vk': cont_vk, 'cont_tg': cont_tg}
     return result
 
@@ -75,5 +75,7 @@ async def get_photos(pr_id):
 
 async def get_description(pr_id):
     profile = await Profile.query.where(Profile.id == pr_id).gino.first()
-    result = {'description': profile.description}
+    result = {'description': profile.description, 'height': profile.height, 'habits': profile.habits,
+              'children': profile.children, 'busy': profile.busy, 'hobby': profile.hobby, 'animals': profile.animals,
+              'bdate': profile.bdate}
     return result

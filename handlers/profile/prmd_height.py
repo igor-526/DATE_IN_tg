@@ -15,6 +15,8 @@ async def valid(event: types.Message, state: FSMContext):
                                     "Какую дополнительную информацию хочешь указать?",
                                reply_markup=profile_inline_keys)
             await event.delete()
+            await bot.delete_message(chat_id=event.from_user.id,
+                                     message_id=data['msg'])
             await Profile.desc_more.set()
         else:
             await event.answer("Я не могу поверить в такой рост")

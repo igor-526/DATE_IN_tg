@@ -157,8 +157,52 @@ async def f_ch_d(event: types.Message):
     await Profile.desc_more.set()
 
 
-async def f_d_height(event: types.CallbackQuery):
+async def f_d_height(event: types.CallbackQuery, state: FSMContext):
     msg = await bot.send_message(chat_id=event.from_user.id,
                                  text="Напиши мне свой рост:",
                                  reply_markup=backin_keys)
+    await state.update_data({'msg': msg.message_id})
     await Profile.d_m_height.set()
+
+
+async def f_d_habits(event: types.CallbackQuery, state: FSMContext):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="Расскажи мне о своих вредных привычках (100 символов):",
+                                 reply_markup=backin_keys)
+    await state.update_data({'msg': msg.message_id})
+    await Profile.d_m_habits.set()
+
+
+async def f_d_children(event: types.CallbackQuery, state: FSMContext):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="Что у тебя по детям?",
+                                 reply_markup=children_keys)
+    await state.update_data({'msg': msg.message_id})
+    await Profile.d_m_children.set()
+
+
+async def f_d_busy(event: types.CallbackQuery, state: FSMContext):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="Выбери соответствующий вариант:",
+                                 reply_markup=busy_keys)
+    await state.update_data({'msg': msg.message_id})
+    await Profile.d_m_busy.set()
+
+
+async def f_d_hobby(event: types.CallbackQuery, state: FSMContext):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="Напиши мне в кратце о своих хобби (200 символов):",
+                                 reply_markup=backin_keys)
+    await state.update_data({'msg': msg.message_id})
+    await Profile.d_m_hobby.set()
+
+
+async def f_d_animals(event: types.CallbackQuery, state: FSMContext):
+    msg = await bot.send_message(chat_id=event.from_user.id,
+                                 text="У тебя есть домашние животные?\n"
+                                      "Может, планируешь завести?\n"
+                                      "Или негативно к ним относишься?\n"
+                                      "(150 символов)",
+                                 reply_markup=backin_keys)
+    await state.update_data({'msg': msg.message_id})
+    await Profile.d_m_animals.set()

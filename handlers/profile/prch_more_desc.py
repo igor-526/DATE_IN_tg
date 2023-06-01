@@ -2,14 +2,44 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from FSM import Profile, Menu
 from create_bot import bot
-from funcs import generate_profile_forsettings, f_d_height
+from funcs import generate_profile_forsettings, f_d_height, f_d_habits, f_d_children, f_d_busy, f_d_hobby, f_d_animals
 from keyboards import profile_keys, menu_keys
 
 
 async def ch_height(event: types.CallbackQuery, state: FSMContext):
     await bot.delete_message(chat_id=event.from_user.id,
                              message_id=event.message.message_id)
-    await f_d_height(event)
+    await f_d_height(event, state)
+
+
+async def ch_habits(event: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=event.from_user.id,
+                             message_id=event.message.message_id)
+    await f_d_habits(event, state)
+
+
+async def ch_children(event: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=event.from_user.id,
+                             message_id=event.message.message_id)
+    await f_d_children(event, state)
+
+
+async def ch_busy(event: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=event.from_user.id,
+                             message_id=event.message.message_id)
+    await f_d_busy(event, state)
+
+
+async def ch_hobby(event: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=event.from_user.id,
+                             message_id=event.message.message_id)
+    await f_d_hobby(event, state)
+
+
+async def ch_animals(event: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=event.from_user.id,
+                             message_id=event.message.message_id)
+    await f_d_animals(event, state)
 
 
 async def go_menu(event: types.CallbackQuery, state: FSMContext):
@@ -61,6 +91,11 @@ async def invalid(event: types.Message):
 
 def register_handlers_prch_more_desc(dp: Dispatcher):
     dp.register_callback_query_handler(ch_height, state=Profile.desc_more, text='height')
+    dp.register_callback_query_handler(ch_hobby, state=Profile.desc_more, text='hobby')
+    dp.register_callback_query_handler(ch_busy, state=Profile.desc_more, text='busy')
+    dp.register_callback_query_handler(ch_children, state=Profile.desc_more, text='children')
+    dp.register_callback_query_handler(ch_animals, state=Profile.desc_more, text='animals')
+    dp.register_callback_query_handler(ch_habits, state=Profile.desc_more, text='habit')
     dp.register_callback_query_handler(go_menu, state=Profile.desc_more, text='menu')
     dp.register_callback_query_handler(go_profile, state=Profile.desc_more, text='profile')
     dp.register_message_handler(invalid, state=Profile.desc_more)

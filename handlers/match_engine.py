@@ -2,7 +2,15 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from dbase import get_photos
 from FSM import Matches, Search
-from funcs import send_menu, get_id_from_message, show_new_match, show_old_match, next_old_match, search, prev_old_match
+from funcs import (send_menu,
+                   get_id_from_message,
+                   show_new_match,
+                   show_old_match,
+                   next_old_match,
+                   search,
+                   prev_old_match,
+                   comp_ask_cat,
+                   generate_profile_description)
 from keyboards import search_keys
 from create_bot import bot
 
@@ -50,11 +58,29 @@ async def all_photos(event: types.CallbackQuery):
         await event.answer("У пользователя нет больше фото")
 
 
+async def description(event: types.CallbackQuery):
+    pr_id = await get_id_from_message(event.message.caption)
+    desc = await generate_profile_description(pr_id)
+    await bot.send_message(chat_id=event.from_user.id,
+                           text=desc,
+                           parse_mode=types.ParseMode.HTML)
+
+
+async def complaint(event: types.CallbackQuery, state: FSMContext):
+    to_id = await get_id_from_message(event.message.caption)
+    await state.update_data({'compl_to': to_id})
+    await comp_ask_cat(event.from_user.id)
+
+
 def register_handlers_matches(dp: Dispatcher):
     dp.register_message_handler(next_new, state=Matches.new_matches, regexp='\U000025B6')
     dp.register_message_handler(show_old, state=Matches.new_matches, regexp='Просмотренные')
     dp.register_callback_query_handler(all_photos, state=Matches.new_matches, text='all_photos')
     dp.register_callback_query_handler(all_photos, state=Matches.old_matches, text='all_photos')
+    dp.register_callback_query_handler(description, state=Matches.new_matches, text='description')
+    dp.register_callback_query_handler(complaint, state=Matches.new_matches, text='complaint')
+    dp.register_callback_query_handler(description, state=Matches.old_matches, text='description')
+    dp.register_callback_query_handler(complaint, state=Matches.old_matches, text='complaint')
     dp.register_message_handler(menu, state=Matches.new_matches, regexp='Меню')
     dp.register_message_handler(menu, state=Matches.old_matches, regexp='Меню')
     dp.register_message_handler(searching, state=Matches.new_matches, regexp='Начать поиск')

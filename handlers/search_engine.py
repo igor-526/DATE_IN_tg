@@ -1,8 +1,8 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-from dbase import profile_like, profile_pass, get_photos, get_description
+from dbase import profile_like, profile_pass, get_photos
 from FSM import Search
-from funcs import send_menu, search, get_id_from_message, comp_ask_cat
+from funcs import send_menu, search, get_id_from_message, comp_ask_cat, generate_profile_description
 from create_bot import bot
 
 
@@ -41,12 +41,10 @@ async def all_photos(event: types.CallbackQuery):
 
 async def description(event: types.CallbackQuery):
     pr_id = await get_id_from_message(event.message.caption)
-    desc = await get_description(pr_id)
-    if desc["description"]:
-        await bot.send_message(chat_id=event.from_user.id,
-                               text=f'{desc["description"]}')
-    else:
-        await event.answer(text="У профиля нет описания")
+    desc = await generate_profile_description(pr_id)
+    await bot.send_message(chat_id=event.from_user.id,
+                           text=desc,
+                           parse_mode=types.ParseMode.HTML)
 
 
 async def complaint(event: types.CallbackQuery, state: FSMContext):
