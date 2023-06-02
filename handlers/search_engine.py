@@ -22,9 +22,9 @@ async def pass_profile(event: types.Message, state: FSMContext):
     await search(event, state)
 
 
-async def menu(event: types.Message):
+async def menu(event: types.Message, state: FSMContext):
     await event.delete()
-    await send_menu(event)
+    await send_menu(event, state)
 
 
 async def all_photos(event: types.CallbackQuery):
@@ -49,7 +49,7 @@ async def description(event: types.CallbackQuery):
 
 async def complaint(event: types.CallbackQuery, state: FSMContext):
     to_id = await get_id_from_message(event.message.caption)
-    await state.update_data({'compl_to': to_id})
+    await state.update_data({'compl_to': to_id, 'back_to': 'search'})
     await comp_ask_cat(event.from_user.id)
 
 

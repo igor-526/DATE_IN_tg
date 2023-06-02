@@ -24,8 +24,12 @@ async def valid(event: types.Message, state: FSMContext):
         await reg_ask_purposes(event)
     elif validator == 'obscene':
         await event.answer(text="Мы против нецензурной лексики\n"
-                                "Попробуй переписать так, чтобы её там не было",
+                                "фильтр мог сработать ошибочно, пока что оставим так, но твоё описание бует отправлено "
+                                "на модерацию",
                            reply_markup=back_keys)
+        async with state.proxy() as data:
+            data['description'] = event.text
+        await reg_ask_purposes(event)
     elif validator == 'long':
         await event.answer(text="Слишком длинное описание\n"
                                 "К сожалению, это не наше ограничение, а мессенджеров",

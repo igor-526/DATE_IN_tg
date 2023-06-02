@@ -90,16 +90,14 @@ async def upd_age_f(tg_id, age_min, age_max):
     await settings.update(age_min=age_min, age_max=age_max).apply()
 
 
-async def upd_deactivate_profile(tg_id):
-    prof_id = await get_profile_id(tg_id)
+async def upd_deactivate_profile(prof_id):
     profile = await Profile.query.where(Profile.id == prof_id).gino.first()
     settings = await Settings.query.where(Settings.profile_id == prof_id).gino.first()
     await profile.update(status='deactivated').apply()
     await settings.update(deactivated=datetime.datetime.now()).apply()
 
 
-async def upd_activate_profile(tg_id):
-    prof_id = await get_profile_id(tg_id)
+async def upd_activate_profile(prof_id):
     profile = await Profile.query.where(Profile.id == prof_id).gino.first()
     settings = await Settings.query.where(Settings.profile_id == prof_id).gino.first()
     await profile.update(status='active').apply()

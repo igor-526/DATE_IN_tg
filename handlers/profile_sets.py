@@ -19,10 +19,10 @@ from funcs import (do_invalid,
                    f_ch_d)
 
 
-async def back(event: types.Message):
+async def back(event: types.Message, state: FSMContext):
     pr_id = await get_profile_id(event.from_user.id)
     await clean_offerlist(pr_id)
-    await send_menu(event)
+    await send_menu(event, state)
 
 
 async def ch_name(event: types.Message):

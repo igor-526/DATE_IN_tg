@@ -23,5 +23,5 @@ async def valid(event: types.Message, state: FSMContext):
 
 
 def register_handlers_reg_purposes(dp: Dispatcher):
-    dp.register_message_handler(back, state=Reg.purposes, regexp="Да")
+    dp.register_message_handler(back, state=Reg.purposes, regexp="Назад")
     dp.register_message_handler(valid, state=Reg.purposes)

@@ -35,9 +35,9 @@ async def prev_old(event: types.Message, state: FSMContext):
     await prev_old_match(event, state)
 
 
-async def menu(event: types.Message):
+async def menu(event: types.Message, state: FSMContext):
     await event.delete()
-    await send_menu(event)
+    await send_menu(event, state)
 
 
 async def searching(event: types.Message, state: FSMContext):
@@ -68,7 +68,7 @@ async def description(event: types.CallbackQuery):
 
 async def complaint(event: types.CallbackQuery, state: FSMContext):
     to_id = await get_id_from_message(event.message.caption)
-    await state.update_data({'compl_to': to_id})
+    await state.update_data({'compl_to': to_id, 'back_to': 'matches'})
     await comp_ask_cat(event.from_user.id)
 
 

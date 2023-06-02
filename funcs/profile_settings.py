@@ -51,6 +51,7 @@ async def show_myprofile(event: types.Message):
 
 
 async def f_ch_name(event: types.Message):
+    await event.delete()
     ch_date = await dates_info(event.from_user.id)
     if not ch_date['name']:
         await event.answer(text='Введи имя, на которое хочешь поменять\n'
@@ -64,6 +65,7 @@ async def f_ch_name(event: types.Message):
 
 
 async def f_ch_bdate(event: types.Message):
+    await event.delete()
     ch_date = await dates_info(event.from_user.id)
     if not ch_date['bdate']:
         await event.answer(text='Введи свою дату рождения в формате ДД.ММ.ГГГГ\n'
@@ -77,6 +79,7 @@ async def f_ch_bdate(event: types.Message):
 
 
 async def f_ch_sex(event: types.Message):
+    await event.delete()
     ch_date = await dates_info(event.from_user.id)
     if not ch_date['sex']:
         await event.answer(text='Кто ты?\n'
@@ -90,6 +93,7 @@ async def f_ch_sex(event: types.Message):
 
 
 async def f_ch_purposes(event: types.Message):
+    await event.delete()
     msg = 'Пожалуйста, перечислите через запятую или пробел номера целей\n' \
           'Менять их можно сколько угодно раз!\n\n'
     msg += await gen_purposes()
@@ -98,6 +102,7 @@ async def f_ch_purposes(event: types.Message):
 
 
 async def f_ch_geo(event: types.Message):
+    await event.delete()
     await event.answer(text="Отправьте мне своё местоположение (можно примерное), чтобы я смог подбирать профили "
                             "сначала поближе!",
                        reply_markup=geo_keys)
@@ -105,12 +110,14 @@ async def f_ch_geo(event: types.Message):
 
 
 async def f_ch_description(event: types.Message):
+    await event.delete()
     await event.answer(text="Напиши мне самое лучшее описание профиля на свете!",
                        reply_markup=cancel_keys)
     await Profile.description.set()
 
 
 async def f_ch_del_photos(event: types.Message):
+    await event.delete()
     await event.answer(text="Функция удалит все твои фотографии профиля, но ты потом сможешь добавить их снова!\n"
                             "Уверены?",
                        reply_markup=yesno_keys)
@@ -118,6 +125,7 @@ async def f_ch_del_photos(event: types.Message):
 
 
 async def f_ch_add_photos(event: types.Message, state: FSMContext):
+    await event.delete()
     count = await upd_c_photos(event.from_user.id)
     if count == 11:
         await event.answer(text='У тебя уже 11 фотографий!\n'
@@ -131,18 +139,21 @@ async def f_ch_add_photos(event: types.Message, state: FSMContext):
 
 
 async def f_ch_age_f(event: types.Message):
+    await event.delete()
     await event.answer(text="Введите минимальный возраст для поиска:",
                        reply_markup=cancel_keys)
     await Profile.age_min.set()
 
 
 async def f_ch_sex_f(event: types.Message):
+    await event.delete()
     await event.answer(text="Кого будем искать?",
                        reply_markup=sex_f_keys)
     await Profile.sex_f.set()
 
 
 async def f_ch_delete(event: types.Message):
+    await event.delete()
     await event.answer(text="В течение недели ты сможешь восстановить профиль, после чего он будет окончательно "
                             "удалён. Продолжить?",
                        reply_markup=yesno_keys)
@@ -150,6 +161,7 @@ async def f_ch_delete(event: types.Message):
 
 
 async def f_ch_d(event: types.Message):
+    await event.delete()
     await event.answer(text='Чем больше информации - тем лучше!',
                        reply_markup=types.ReplyKeyboardRemove())
     await event.answer(text="Какую дополнительную информацию хочешь указать?",

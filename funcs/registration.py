@@ -9,7 +9,7 @@ from keyboards import (reg_profile_keys,
                        backskip_keys,
                        readyback_keys,
                        sex_f_keys,
-                       profile_inline_keys)
+                       profilereg_inline_keys)
 from funcs.purposes import gen_purposes
 from dbase import add_profile, add_settings, add_profile_photos
 from datetime import date
@@ -168,11 +168,9 @@ async def reg_finish(event: types.Message, state: FSMContext):
         upl = Thread(target=upload_to_vk, args=(pr_id, ), daemon=True)
         upl.start()
         upl.join(0.0)
-        keysmod = profile_inline_keys
         await event.answer(text="Ура! Всё получилось!\n"
                                 "Ты так же можешь добавить следующие данные о себе:",
-                           reply_markup=keysmod.add(types.InlineKeyboardButton(text='ПЕРЕЙТИ В МЕНЮ',
-                                                                               callback_data='menu')))
+                           reply_markup=profilereg_inline_keys)
         await state.update_data({'pr_id': pr_id})
         await Profile.desc_more.set()
     except Exception as exx:
