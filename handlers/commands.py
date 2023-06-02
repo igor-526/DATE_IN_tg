@@ -2,6 +2,17 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from dbase import chk_reg, get_profile_id, del_profile
 from funcs import send_menu
+from FSM import Menu
+from keyboards import readyback_keys
+
+
+async def report(event: types.Message, state: FSMContext):
+    pr_id = await get_profile_id(event.from_user.id)
+    await event.answer("Напишите своё сообщение (Или несколько сообщений) для администрации\n"
+                       "Можно отправить фото (или несколько фото) отделными сообщениями. После чего нажми 'Готово!'",
+                       reply_markup=readyback_keys)
+    await state.update_data({'comp_media': [], 'comp_description': '', 'pr_id': pr_id})
+    await Menu.report.set()
 
 
 async def rules(event: types.Message):
@@ -40,6 +51,7 @@ async def help(event: types.Message):
 
 def register_handlers_commands(dp: Dispatcher):
     dp.register_message_handler(deleteprofile, commands=['deleteprofile'], state='*')
+    dp.register_message_handler(report, commands=['report'], state='*')
     dp.register_message_handler(rules, commands=['rules'], state='*')
     dp.register_message_handler(reset, commands=['reset'], state='*')
     dp.register_message_handler(smenu, commands=['menu'], state='*')

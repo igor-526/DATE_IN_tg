@@ -36,7 +36,15 @@ async def generate_profile_forsettings(tg_id):
     purposes = await get_purposes_from_list(profile['purposes'])
     for purpose in purposes:
         msg1 += f'&#10004;{purpose}\n'
-    msg2 = f'Описание: {profile["description"]}\n\nХотите что-нибудь поменять?'
+    msg2 = ''
+    msg2 += f'Описание: {profile["description"]}\n' if profile["description"] else ''
+    msg2 += f'\U0001F4CF {profile["height"]} см\n' if profile["height"] else ''
+    msg2 += f'\U0001F4BC {profile["busy"]}\n' if profile["busy"] else ''
+    msg2 += f'\U0001F466 {profile["children"]}\n' if profile["children"] else ''
+    msg2 += f'\U0001F552 {profile["hobby"]}\n' if profile["hobby"] else ''
+    msg2 += f'\U0001F6AB {profile["habits"]}\n' if profile["habits"] else ''
+    msg2 += f'\U0001F436 {profile["animals"]}\n' if profile["animals"] else ''
+    msg2 += 'Хочешь что-нибудь поменять?'
     att1 = profile['main_photo']
     att2 = profile['other_photos']
     return {'msg1': msg1, 'msg2': msg2, 'att1': att1, 'att2': att2}

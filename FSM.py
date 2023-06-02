@@ -6,6 +6,8 @@ class Menu(StatesGroup):
     registration = State()
     return_profile = State()
     updgeo = State()
+    report = State()
+    report_confirm = State()
 
 
 class Reg(StatesGroup):

@@ -37,3 +37,4 @@ from handlers.complaints.comp_description import register_handlers_comp_descript
 from handlers.complaints.comp_confirm import register_handlers_comp_confirm
 from handlers.commands import register_handlers_commands
 from handlers.menu_updgeo import register_handlers_updgeo
+from handlers.report import register_handlers_report

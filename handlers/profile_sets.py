@@ -25,16 +25,16 @@ async def back(event: types.Message, state: FSMContext):
     await send_menu(event, state)
 
 
-async def ch_name(event: types.Message):
-    await f_ch_name(event)
+async def ch_name(event: types.Message, state: FSMContext):
+    await f_ch_name(event, state)
 
 
-async def ch_bdate(event: types.Message):
-    await f_ch_bdate(event)
+async def ch_bdate(event: types.Message, state: FSMContext):
+    await f_ch_bdate(event, state)
 
 
-async def ch_sex(event: types.Message):
-    await f_ch_sex(event)
+async def ch_sex(event: types.Message, state: FSMContext):
+    await f_ch_sex(event, state)
 
 
 async def ch_purposes(event: types.Message):

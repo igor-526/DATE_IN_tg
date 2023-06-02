@@ -50,9 +50,10 @@ async def show_myprofile(event: types.Message):
     await Profile.show.set()
 
 
-async def f_ch_name(event: types.Message):
+async def f_ch_name(event: types.Message, state: FSMContext):
     await event.delete()
-    ch_date = await dates_info(event.from_user.id)
+    data = await state.get_data()
+    ch_date = await dates_info(data['pr_id'])
     if not ch_date['name']:
         await event.answer(text='Введи имя, на которое хочешь поменять\n'
                                 'Но учти, что делать это можно только один раз!',
@@ -60,13 +61,13 @@ async def f_ch_name(event: types.Message):
         await Profile.name.set()
     else:
         await event.answer(text=f'Вы уже меняли имя {ch_date["name"].strftime("%d.%m")}\n'
-                                f'Если есть необходимость всё-таки его поменять, обратитесь через репорт в главном '
-                                f'меню')
+                                f'Если есть необходимость всё-таки его поменять, обратитесь через /report')
 
 
-async def f_ch_bdate(event: types.Message):
+async def f_ch_bdate(event: types.Message, state: FSMContext):
     await event.delete()
-    ch_date = await dates_info(event.from_user.id)
+    data = await state.get_data()
+    ch_date = await dates_info(data['pr_id'])
     if not ch_date['bdate']:
         await event.answer(text='Введи свою дату рождения в формате ДД.ММ.ГГГГ\n'
                                 'Но учти, что делать это можно только один раз!',
@@ -74,13 +75,13 @@ async def f_ch_bdate(event: types.Message):
         await Profile.bdate.set()
     else:
         await event.answer(text=f'Вы уже меняли дату рождения {ch_date["name"].strftime("%d.%m")}\n'
-                                f'Если есть необходимость всё-таки её поменять, обратитесь через репорт в главном '
-                                f'меню')
+                                f'Если есть необходимость всё-таки её поменять, обратитесь через /report')
 
 
-async def f_ch_sex(event: types.Message):
+async def f_ch_sex(event: types.Message, state: FSMContext):
     await event.delete()
-    ch_date = await dates_info(event.from_user.id)
+    data = await state.get_data()
+    ch_date = await dates_info(data['pr_id'])
     if not ch_date['sex']:
         await event.answer(text='Кто ты?\n'
                                 'Но учти, что делать это можно только один раз!',
@@ -88,8 +89,7 @@ async def f_ch_sex(event: types.Message):
         await Profile.sex.set()
     else:
         await event.answer(text=f'Вы уже меняли пол {ch_date["sex"].strftime("%d.%m")}\n'
-                                f'Если есть необходимость всё-таки поменять пол, обратитесь через репорт в главном '
-                                f'меню')
+                                f'Если есть необходимость всё-таки поменять пол, обратитесь через /report')
 
 
 async def f_ch_purposes(event: types.Message):
@@ -103,8 +103,9 @@ async def f_ch_purposes(event: types.Message):
 
 async def f_ch_geo(event: types.Message):
     await event.delete()
-    await event.answer(text="Отправьте мне своё местоположение (можно примерное), чтобы я смог подбирать профили "
-                            "сначала поближе!",
+    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили "
+                            "сначала поближе!\n"
+                            "Можно отправить гео через вложения, если хочется отправить приерное местоположение",
                        reply_markup=geo_keys)
     await Profile.geo.set()
 

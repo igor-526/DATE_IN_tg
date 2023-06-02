@@ -50,8 +50,10 @@ if __name__ == "__main__":
                           register_handlers_prmd_hobby,
                           register_handlers_prmd_animals,
                           register_handlers_commands,
-                          register_handlers_updgeo)
+                          register_handlers_updgeo,
+                          register_handlers_report)
     register_handlers_commands(dp)
+    register_handlers_report(dp)
     register_handlers_menu(dp)
     register_handlers_search(dp)
     register_handlers_matches(dp)
