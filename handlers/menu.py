@@ -80,8 +80,9 @@ async def updgeo(event: types.Message, state: FSMContext):
         pr_id = await get_profile_id(event.from_user.id)
         await state.update_data({'pr_id': pr_id})
     await event.delete()
-    await event.answer(text="Отправьте мне своё местоположение (можно примерное), чтобы я смог подбирать профили "
-                            "сначала поближе!",
+    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили сначала поближе!\n"
+                            "Ты можешь вложением отправить примерное местоположение, если не хочешь делиться настоящим\n"
+                            "В любом случае, эти данные останутся исключительно между нами!",
                        reply_markup=geo_keys)
     await Menu.updgeo.set()
 

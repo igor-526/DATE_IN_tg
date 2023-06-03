@@ -103,8 +103,7 @@ async def f_ch_purposes(event: types.Message):
 
 async def f_ch_geo(event: types.Message):
     await event.delete()
-    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили "
-                            "сначала поближе!\n"
+    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили сначала поближе!\n"
                             "Можно отправить гео через вложения, если хочется отправить приерное местоположение",
                        reply_markup=geo_keys)
     await Profile.geo.set()

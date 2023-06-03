@@ -26,6 +26,9 @@ async def do_invalid(event: types.Message, keys):
 
 
 async def start_registration(event: types.Message):
+    await event.answer(text="\U00002757 ВНИМАНИЕ \U00002757 \n"
+                            "Продолжая регистрацию, ты даёшь своё согласие на обработку персональных данных\n"
+                            "Ознакомиться с ней можно здесь datein.ru/privacy")
     await event.answer(text="Подскажите, у Вас уже есть профиль на сайте или в ВК?",
                        reply_markup=reg_profile_keys)
     await Reg.profile.set()
@@ -49,7 +52,8 @@ async def reg_ask_name_manual(event: types.Message):
 
 async def reg_ask_bdate(event: types.Message):
     await event.answer(text="Записал &#128521;\n"
-                            "Мне нужна твоя дата рождения. Напиши мне её, пожалуйста, в формате ДД.ММ.ГГГГ",
+                            "Мне нужна твоя дата рождения. Напиши мне её, пожалуйста, в формате ДД.ММ.ГГГГ\n"
+                            "Я её никому не покажу. Только возраст и знак зодиака!",
                        reply_markup=back_keys,
                        parse_mode=types.ParseMode.HTML)
     await Reg.bdate.set()
@@ -64,8 +68,10 @@ async def reg_ask_sex(event: types.Message):
 
 
 async def reg_ask_geo(event: types.Message):
-    await event.answer(text='Мне нужно знать твоё местоположение (можно примерное)\n'
-                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе',
+    await event.answer(text='Мне нужно знать твоё местоположение\n'
+                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе\n'
+                            'Ты можешь отправить мне примерное местоположение с помощью вложения\n'
+                            'В любом случае, оно останется только между нами!',
                        reply_markup=geo_keys)
     await Reg.geo.set()
 

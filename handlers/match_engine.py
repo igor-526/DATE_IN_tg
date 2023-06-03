@@ -47,7 +47,8 @@ async def searching(event: types.Message, state: FSMContext):
 
 
 async def all_photos(event: types.CallbackQuery):
-    pr_id = await get_id_from_message(event.message.caption)
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    pr_id = await get_id_from_message(texttoid)
     photos = await get_photos(pr_id)
     if photos:
         media = types.MediaGroup()
@@ -59,7 +60,8 @@ async def all_photos(event: types.CallbackQuery):
 
 
 async def description(event: types.CallbackQuery):
-    pr_id = await get_id_from_message(event.message.caption)
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    pr_id = await get_id_from_message(texttoid)
     desc = await generate_profile_description(pr_id)
     await bot.send_message(chat_id=event.from_user.id,
                            text=desc,
@@ -67,7 +69,8 @@ async def description(event: types.CallbackQuery):
 
 
 async def complaint(event: types.CallbackQuery, state: FSMContext):
-    to_id = await get_id_from_message(event.message.caption)
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    to_id = await get_id_from_message(texttoid)
     await state.update_data({'compl_to': to_id, 'back_to': 'matches'})
     await comp_ask_cat(event.from_user.id)
 
