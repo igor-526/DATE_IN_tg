@@ -30,7 +30,6 @@ class Profile(BaseModel):
     vk_id = Column(Integer, nullable=True, unique=True)
     tg_id = Column(BigInteger, nullable=True, unique=True)
     tg_nick = Column(String, nullable=True)
-    tg_url = Column(String, nullable=True)
     name = Column(String, nullable=False)
     bdate = Column(Date, nullable=False)
     sex = Column(Integer, nullable=False)
@@ -68,8 +67,6 @@ class Settings(BaseModel):
     created = Column(Date, nullable=False)
     deactivated = Column(DateTime, nullable=True)
     last_usage = Column(DateTime, nullable=False)
-    offer_kilometrage = Column(Integer, nullable=True)
-    offer_ofset = Column(Integer, nullable=True)
 
     query: sql.select
 

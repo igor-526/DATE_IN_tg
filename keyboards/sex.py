@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-b1 = KeyboardButton("Мужчина")
+b1 = KeyboardButton("Парень")
 b2 = KeyboardButton("Девушка")
 b3 = KeyboardButton("Назад")
 

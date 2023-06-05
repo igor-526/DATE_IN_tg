@@ -58,7 +58,6 @@ async def add_profile_photos(tg_id: int,
 
 async def add_tg_id(prof_id: int,
                     tg_id: int,
-                    tg_nick: str,
-                    tg_url: str):
+                    tg_nick: str):
     profile = await Profile.query.where(Profile.id == prof_id).gino.first()
-    await profile.update(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url, status='active').apply()
+    await profile.update(tg_id=tg_id, tg_nick=tg_nick, status='active').apply()

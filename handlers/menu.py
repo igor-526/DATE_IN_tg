@@ -7,6 +7,7 @@ from funcs import start_registration, do_invalid, send_menu, show_myprofile, sea
 
 
 async def startmessage(event: types.Message):
+    print(event)
     check = await chk_reg(event.from_user.id)
     if check:
         if check.status == 'active':

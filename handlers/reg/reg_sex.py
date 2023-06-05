@@ -27,6 +27,6 @@ async def invalid(event: types.Message):
 
 def register_handlers_reg_sex(dp: Dispatcher):
     dp.register_message_handler(back, state=Reg.sex, regexp="Назад")
-    dp.register_message_handler(male, state=Reg.sex, regexp="Мужчина")
+    dp.register_message_handler(male, state=Reg.sex, regexp="Парень")
     dp.register_message_handler(male, state=Reg.sex, regexp="Девушка")
     dp.register_message_handler(invalid, state=Reg.sex)

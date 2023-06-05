@@ -1,4 +1,5 @@
 from models import Profile, Settings, Images
+from create_bot import bot
 
 
 async def get_prof_forview(id):
@@ -26,7 +27,8 @@ async def get_prof_forview(id):
     if settings.purp5 == 1:
         purposes.append(5)
     cont_vk = f'https://vk.com/id{profile.vk_id}' if profile.vk_id else None
-    cont_tg = profile.tg_url if profile.tg_url else None
+    userinfo = await bot.get_chat(profile.tg_id)
+    cont_tg = f'tg://user?id={profile.tg_id}' if not userinfo['has_private_forwards'] else None
     result = {'id': profile.id, 'name': profile.name, 'city': profile.city, 'bdate': profile.bdate,
               'main_photo': main_photo,
               'purposes': purposes, 'cont_vk': cont_vk, 'cont_tg': cont_tg}
@@ -36,7 +38,8 @@ async def get_prof_forview(id):
 async def get_prof_forsetting(tg_id):
     profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
     settings = await Settings.query.where(Settings.profile_id == profile.id).gino.first()
-    photos = await Images.query.where(Images.profile_id == profile.id).where(Images.description == 'profile_photo').gino.all()
+    photos = await Images.query.where(Images.profile_id == profile.id).where(
+        Images.description == 'profile_photo').gino.all()
     counter = 0
     images = []
     main_photo = None

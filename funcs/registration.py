@@ -19,14 +19,14 @@ from threading import Thread
 
 
 async def do_invalid(event: types.Message, keys):
-    await event.answer(text="Я вас не понимаю &#128532;\n"
-                            "Пожалуйста, выберите действие на клавиатуре",
+    await event.answer(text="Я не понимаю &#128532;\n"
+                            "Пожалуйста, выбери действие на клавиатуре",
                        reply_markup=keys,
                        parse_mode=types.ParseMode.HTML)
 
 
 async def start_registration(event: types.Message):
-    await event.answer(text="Подскажите, у Вас уже есть профиль на сайте или в ВК?",
+    await event.answer(text="Подскажи, ты используешь DATE IN в ВК?",
                        reply_markup=reg_profile_keys)
     await Reg.profile.set()
 
@@ -82,7 +82,7 @@ async def reg_ask_photos(event: types, state: FSMContext):
 
 
 async def reg_ask_description(event: types.Message):
-    await event.answer(text="Готово! Почти последний шаг - напиши мне какой-нибудь текст, который заинтересует любого "
+    await event.answer(text="Отлично! Почти последний шаг - напиши мне какой-нибудь текст, который заинтересует любого "
                             "и заставит нажать кнопку лайка!\n"
                             "Если хочется придумать позже, или вообще не добавлять (что мы так же не рекомендуем!),"
                             " просто нажми кнопку 'Пропустить'",
@@ -92,7 +92,7 @@ async def reg_ask_description(event: types.Message):
 
 async def reg_ask_purposes(event: types.Message):
     msg = 'Последний шаг - определиться с целями!\nПожалуйста, через запятую или пробел ' \
-          'перечислите номера целей\n\n'
+          'перечисли номера целей\n\n'
     msg += await gen_purposes()
     await event.answer(text=msg,
                        reply_markup=back_keys,
@@ -101,8 +101,8 @@ async def reg_ask_purposes(event: types.Message):
 
 
 async def reg_ask_f_sex(event: types.Message):
-    await event.answer(text='С твоим профилем всё!\nОсталось определиться с настройками поиска\n'
-                            'Тут гораздо меньше. Детальнее потом можно будет настроить в меню')
+    await event.answer(text='С твоим профилем закончили!\nДавай теперь настроим поиск\n'
+                            'Тут гораздо меньше.\n')
     await event.answer(text='Кого мы будем искать?',
                        reply_markup=sex_f_keys)
     await Reg.f_sex.set()

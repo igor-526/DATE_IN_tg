@@ -38,6 +38,5 @@ async def ask_code(event: types.Message):
 async def vk_finish(event: types.Message, id):
     await add_tg_id(prof_id=id,
                     tg_id=event.from_user.id,
-                    tg_nick=event.from_user.username,
-                    tg_url=event.from_user.url)
+                    tg_nick=event.from_user.username)
     await event.answer(text="Готово. Успешный вход через ВК!")

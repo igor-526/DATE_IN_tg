@@ -32,7 +32,11 @@ async def next_old_match(event: types.Message, state: FSMContext):
             data['old_matches']['cursor'] += 1
             cursor = data['old_matches']['cursor']
             profmsg = await generate_profile_forview(data['old_matches']['matches'][cursor])
-            keyss = await match_inline_keys(profmsg['contacts'])
+            try:
+                keyss = await match_inline_keys(profmsg['contacts'])
+            except:
+                keyss = None
+
             if profmsg['m_ph']:
                 await event.answer_photo(photo=profmsg['m_ph'], caption=profmsg['msg1'],
                                          parse_mode=types.ParseMode.HTML,
