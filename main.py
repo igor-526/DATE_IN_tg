@@ -36,6 +36,7 @@ if __name__ == "__main__":
                           register_handlers_prch_photos,
                           register_handlers_prch_age_f,
                           register_handlers_prch_sex_f,
+                          register_handlers_prch_delprofile,
                           register_handlers_search,
                           register_handlers_matches,
                           register_handlers_comp_category,
@@ -47,10 +48,16 @@ if __name__ == "__main__":
                           register_handlers_prmd_children,
                           register_handlers_prmd_busy,
                           register_handlers_prmd_hobby,
-                          register_handlers_prmd_animals)
+                          register_handlers_prmd_animals,
+                          register_handlers_commands,
+                          register_handlers_updgeo,
+                          register_handlers_report)
+    register_handlers_commands(dp)
+    register_handlers_report(dp)
     register_handlers_menu(dp)
     register_handlers_search(dp)
     register_handlers_matches(dp)
+    register_handlers_updgeo(dp)
     register_handlers_profile(dp)
     register_handlers_comp_category(dp)
     register_handlers_comp_description(dp)
@@ -65,6 +72,7 @@ if __name__ == "__main__":
     register_handlers_prch_photos(dp)
     register_handlers_prch_sex_f(dp)
     register_handlers_prch_more_desc(dp)
+    register_handlers_prch_delprofile(dp)
     register_handlers_prmd_height(dp)
     register_handlers_prmd_habits(dp)
     register_handlers_prmd_children(dp)

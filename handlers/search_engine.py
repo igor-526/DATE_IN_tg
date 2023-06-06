@@ -22,13 +22,14 @@ async def pass_profile(event: types.Message, state: FSMContext):
     await search(event, state)
 
 
-async def menu(event: types.Message):
+async def menu(event: types.Message, state: FSMContext):
     await event.delete()
-    await send_menu(event)
+    await send_menu(event, state)
 
 
 async def all_photos(event: types.CallbackQuery):
-    pr_id = await get_id_from_message(event.message.caption)
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    pr_id = await get_id_from_message(texttoid)
     photos = await get_photos(pr_id)
     if photos:
         media = types.MediaGroup()
@@ -40,7 +41,8 @@ async def all_photos(event: types.CallbackQuery):
 
 
 async def description(event: types.CallbackQuery):
-    pr_id = await get_id_from_message(event.message.caption)
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    pr_id = await get_id_from_message(texttoid)
     desc = await generate_profile_description(pr_id)
     await bot.send_message(chat_id=event.from_user.id,
                            text=desc,
@@ -48,14 +50,15 @@ async def description(event: types.CallbackQuery):
 
 
 async def complaint(event: types.CallbackQuery, state: FSMContext):
-    to_id = await get_id_from_message(event.message.caption)
-    await state.update_data({'compl_to': to_id})
+    texttoid = event.message.caption if event.message.caption else event.message.text
+    to_id = await get_id_from_message(texttoid)
+    await state.update_data({'compl_to': to_id, 'back_to': 'search'})
     await comp_ask_cat(event.from_user.id)
 
 
 def register_handlers_search(dp: Dispatcher):
     dp.register_message_handler(like_profile, state=Search.searching, regexp='\U00002764')
-    dp.register_message_handler(pass_profile, state=Search.searching, regexp='\U0001F494')
+    dp.register_message_handler(pass_profile, state=Search.searching, regexp='\U0000274C')
     dp.register_callback_query_handler(all_photos, state=Search.searching, text='all_photos')
     dp.register_callback_query_handler(description, state=Search.searching, text='description')
     dp.register_callback_query_handler(complaint, state=Search.searching, text='complaint')

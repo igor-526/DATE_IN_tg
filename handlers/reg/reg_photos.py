@@ -29,6 +29,6 @@ async def invalid(event: types.Message):
 
 def register_handlers_reg_photo(dp: Dispatcher):
     dp.register_message_handler(ready, state=Reg.photo, regexp="Готово!")
-    dp.register_message_handler(back, state=Reg.photo, regexp="Пропустить")
+    dp.register_message_handler(back, state=Reg.photo, regexp="Назад")
     dp.register_message_handler(get_photos, state=Reg.photo, content_types=types.ContentType.PHOTO)
     dp.register_message_handler(invalid, state=Reg.photo)

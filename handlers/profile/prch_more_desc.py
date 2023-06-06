@@ -61,7 +61,8 @@ async def go_profile(event: types.CallbackQuery):
                              parse_mode=types.ParseMode.HTML,
                              reply_markup=profile_keys)
     else:
-        await bot.send_message(text=msg1,
+        await bot.send_message(chat_id=event.from_user.id,
+                               text=msg1,
                                parse_mode=types.ParseMode.HTML,
                                reply_markup=profile_keys)
     if profmsg['att2']:
@@ -77,7 +78,8 @@ async def go_profile(event: types.CallbackQuery):
                                    media=media)
     else:
         if profmsg['msg2']:
-            await bot.send_message(text=profmsg['msg2'],
+            await bot.send_message(chat_id=event.from_user.id,
+                                   text=profmsg['msg2'],
                                    reply_markup=profile_keys)
     await Profile.show.set()
 

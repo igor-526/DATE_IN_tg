@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 b1 = KeyboardButton("\U00002764")
-b2 = KeyboardButton("\U0001F494")
+b2 = KeyboardButton("\U0000274C")
 b3 = KeyboardButton("Меню")
 search_keys = ReplyKeyboardMarkup(resize_keyboard=True)
 search_keys.row(b2, b1).add(b3)

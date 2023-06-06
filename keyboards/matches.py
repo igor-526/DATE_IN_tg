@@ -36,8 +36,7 @@ async def match_inline_keys(contacts):
     keys = InlineKeyboardMarkup()
     keys.row(ib1, ib2)
     if contacts['cont_tg']:
-            tgkey = InlineKeyboardButton(text='TG', url=contacts['cont_tg'])
-            keys.add(tgkey)
+        keys.add(InlineKeyboardButton(text='TG', url=contacts['cont_tg']))
     if contacts['cont_vk']:
         keys.add(InlineKeyboardButton(text='ВК', url=contacts['cont_vk']))
     keys.add(ib3)

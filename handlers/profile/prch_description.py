@@ -20,7 +20,10 @@ async def valid(event: types.Message):
         await show_myprofile(event)
     elif validator == 'obscene':
         await event.answer(text="Мы против нецензурной лексики\n"
-                                "Попробуй переписать так, чтобы её там не было")
+                                "фильтр мог сработать ошибочно, пока что оставим так, но твоё описание бует отправлено "
+                                "на модерацию")
+        await upd_description(event.from_user.id, event.text)
+        await show_myprofile(event)
     elif validator == 'long':
         await event.answer(text="Слишком длинное описание\n"
                                 "К сожалению, это не наше ограничение, а мессенджеров")

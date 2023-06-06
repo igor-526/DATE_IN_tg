@@ -9,7 +9,7 @@ from keyboards import (reg_profile_keys,
                        backskip_keys,
                        readyback_keys,
                        sex_f_keys,
-                       profile_inline_keys)
+                       profilereg_inline_keys)
 from funcs.purposes import gen_purposes
 from dbase import add_profile, add_settings, add_profile_photos
 from datetime import date
@@ -26,6 +26,9 @@ async def do_invalid(event: types.Message, keys):
 
 
 async def start_registration(event: types.Message):
+    await event.answer(text="\U00002757 ВНИМАНИЕ \U00002757 \n"
+                            "Продолжая регистрацию, ты даёшь своё согласие на обработку персональных данных\n"
+                            "Ознакомиться с ней можно здесь datein.ru/privacy")
     await event.answer(text="Подскажи, ты используешь DATE IN в ВК?",
                        reply_markup=reg_profile_keys)
     await Reg.profile.set()
@@ -49,7 +52,8 @@ async def reg_ask_name_manual(event: types.Message):
 
 async def reg_ask_bdate(event: types.Message):
     await event.answer(text="Записал &#128521;\n"
-                            "Мне нужна твоя дата рождения. Напиши мне её, пожалуйста, в формате ДД.ММ.ГГГГ",
+                            "Мне нужна твоя дата рождения. Напиши мне её, пожалуйста, в формате ДД.ММ.ГГГГ\n"
+                            "Я её никому не покажу. Только возраст и знак зодиака!",
                        reply_markup=back_keys,
                        parse_mode=types.ParseMode.HTML)
     await Reg.bdate.set()
@@ -64,8 +68,10 @@ async def reg_ask_sex(event: types.Message):
 
 
 async def reg_ask_geo(event: types.Message):
-    await event.answer(text='Мне нужно знать твоё местоположение (можно примерное)\n'
-                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе',
+    await event.answer(text='Мне нужно знать твоё местоположение\n'
+                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе\n'
+                            'Ты можешь отправить мне примерное местоположение с помощью вложения\n'
+                            'В любом случае, оно останется только между нами!',
                        reply_markup=geo_keys)
     await Reg.geo.set()
 
@@ -168,11 +174,9 @@ async def reg_finish(event: types.Message, state: FSMContext):
         upl = Thread(target=upload_to_vk, args=(pr_id, ), daemon=True)
         upl.start()
         upl.join(0.0)
-        keysmod = profile_inline_keys
         await event.answer(text="Ура! Всё получилось!\n"
                                 "Ты так же можешь добавить следующие данные о себе:",
-                           reply_markup=keysmod.add(types.InlineKeyboardButton(text='ПЕРЕЙТИ В МЕНЮ',
-                                                                               callback_data='menu')))
+                           reply_markup=profilereg_inline_keys)
         await state.update_data({'pr_id': pr_id})
         await Profile.desc_more.set()
     except Exception as exx:

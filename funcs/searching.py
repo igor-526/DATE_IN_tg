@@ -22,4 +22,4 @@ async def search(event: types.Message, state: FSMContext):
     else:
         await event.answer(text="Никого не нашли для тебя\n"
                                 "Не расстраивайся, попробуй поменять настройки поиска")
-        await send_menu(event)
+        await send_menu(event, state)

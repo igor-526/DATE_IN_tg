@@ -10,11 +10,14 @@ async def back(event: types.Message):
 
 
 async def valid(event: types.Location, state: FSMContext):
-    async with state.proxy() as data:
-        data['latitude'] = event['location']['latitude']
-        data['longitude'] = event['location']['longitude']
-        data['city'] = await get_city(event['location']['latitude'], event['location']['longitude'])
-    await reg_ask_photos(event, state)
+    try:
+        async with state.proxy() as data:
+            data['latitude'] = event['location']['latitude']
+            data['longitude'] = event['location']['longitude']
+            data['city'] = await get_city(event['location']['latitude'], event['location']['longitude'])
+        await reg_ask_photos(event, state)
+    except:
+        await invalid(event)
 
 
 async def invalid(event: types.Message):
@@ -26,5 +29,5 @@ async def invalid(event: types.Message):
 
 def register_handlers_reg_geo(dp: Dispatcher):
     dp.register_message_handler(back, state=Reg.geo, regexp="Назад")
-    dp.register_message_handler(valid, state=Reg.geo, content_types=types.ContentType.LOCATION)
+    dp.register_message_handler(valid, state=Reg.geo, content_types=types.ContentType.ANY)
     dp.register_message_handler(invalid, state=Reg.geo)

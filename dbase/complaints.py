@@ -15,7 +15,8 @@ async def send_complaint(pr_id, to_id, cat, description, images):
                               images=','.join(img_ids),
                               status='new',
                               date=date.today(),
-                              complain_to_id=int(to_id),
+                              complain_to_id=to_id,
                               profile_id=int(pr_id))
     await complaint.create()
-    await profile_pass(prof_id=pr_id, offer_id=to_id)
+    if to_id:
+        await profile_pass(prof_id=pr_id, offer_id=to_id)

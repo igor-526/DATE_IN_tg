@@ -23,6 +23,7 @@ from handlers.profile.prch_photos import register_handlers_prch_photos
 from handlers.profile.prch_age_f import register_handlers_prch_age_f
 from handlers.profile.prch_sex_f import register_handlers_prch_sex_f
 from handlers.profile.prch_more_desc import register_handlers_prch_more_desc
+from handlers.profile.prch_delprofile import register_handlers_prch_delprofile
 from handlers.profile.prmd_height import register_handlers_prmd_height
 from handlers.profile.prmd_habits import register_handlers_prmd_habits
 from handlers.profile.prmd_children import register_handlers_prmd_children
@@ -34,3 +35,6 @@ from handlers.match_engine import register_handlers_matches
 from handlers.complaints.comp_category import register_handlers_comp_category
 from handlers.complaints.comp_description import register_handlers_comp_description
 from handlers.complaints.comp_confirm import register_handlers_comp_confirm
+from handlers.commands import register_handlers_commands
+from handlers.menu_updgeo import register_handlers_updgeo
+from handlers.report import register_handlers_report

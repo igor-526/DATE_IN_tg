@@ -13,15 +13,18 @@ async def cancel(event: types.Message):
 
 
 async def valid(event: types.Location):
-    geo = {}
-    geo['latitude'] = event['location']['latitude']
-    geo['longitude'] = event['location']['longitude']
-    geo['city'] = await get_city(event['location']['latitude'], event['location']['longitude'])
-    await upd_geo(event['from']['id'], geo)
-    await bot.send_message(event['from']['id'], text="Успешно обновил!\n"
-                                                     "Выберите действие:",
-                           reply_markup=profile_keys)
-    await Profile.show.set()
+    try:
+        geo = {}
+        geo['latitude'] = event['location']['latitude']
+        geo['longitude'] = event['location']['longitude']
+        geo['city'] = await get_city(event['location']['latitude'], event['location']['longitude'])
+        await upd_geo(event['from']['id'], geo)
+        await bot.send_message(event['from']['id'], text="Успешно обновил!\n"
+                                                         "Выберите действие:",
+                               reply_markup=profile_keys)
+        await Profile.show.set()
+    except:
+        await invalid(event)
 
 
 async def invalid(event: types.Message):
@@ -30,5 +33,5 @@ async def invalid(event: types.Message):
 
 def register_handlers_prch_geo(dp: Dispatcher):
     dp.register_message_handler(cancel, state=Profile.geo, regexp="Назад")
-    dp.register_message_handler(valid, state=Profile.geo, content_types=types.ContentType.LOCATION)
+    dp.register_message_handler(valid, state=Profile.geo, content_types=types.ContentType.ANY)
     dp.register_message_handler(invalid, state=Profile.geo)

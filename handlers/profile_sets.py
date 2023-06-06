@@ -19,22 +19,22 @@ from funcs import (do_invalid,
                    f_ch_d)
 
 
-async def back(event: types.Message):
+async def back(event: types.Message, state: FSMContext):
     pr_id = await get_profile_id(event.from_user.id)
     await clean_offerlist(pr_id)
-    await send_menu(event)
+    await send_menu(event, state)
 
 
-async def ch_name(event: types.Message):
-    await f_ch_name(event)
+async def ch_name(event: types.Message, state: FSMContext):
+    await f_ch_name(event, state)
 
 
-async def ch_bdate(event: types.Message):
-    await f_ch_bdate(event)
+async def ch_bdate(event: types.Message, state: FSMContext):
+    await f_ch_bdate(event, state)
 
 
-async def ch_sex(event: types.Message):
-    await f_ch_sex(event)
+async def ch_sex(event: types.Message, state: FSMContext):
+    await f_ch_sex(event, state)
 
 
 async def ch_purposes(event: types.Message):

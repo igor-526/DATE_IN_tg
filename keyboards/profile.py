@@ -29,6 +29,18 @@ profile_inline_keys = InlineKeyboardMarkup()
 profile_inline_keys.row(ib1, ib2).row(ib3, ib4).row(ib5, ib6).add(ib7)
 
 
+ib1 = InlineKeyboardButton(text='Рост', callback_data='height')
+ib2 = InlineKeyboardButton(text='Хобби', callback_data='hobby')
+ib3 = InlineKeyboardButton(text='Занятость', callback_data='busy')
+ib4 = InlineKeyboardButton(text='Дети', callback_data='children')
+ib5 = InlineKeyboardButton(text='Дом. животные', callback_data='animals')
+ib6 = InlineKeyboardButton(text='Вр. привычки', callback_data='habit')
+ib7 = InlineKeyboardButton(text='В профиль', callback_data='profile')
+ib8 = InlineKeyboardButton(text='ПЕРЕЙТИ В МЕНЮ', callback_data='menu')
+profilereg_inline_keys = InlineKeyboardMarkup()
+profilereg_inline_keys.row(ib1, ib2).row(ib3, ib4).row(ib5, ib6).add(ib7).add(ib8)
+
+
 backkey = InlineKeyboardButton(text='Назад', callback_data='back')
 cleankey = InlineKeyboardButton(text='Очистить', callback_data='clean')
 backin_keys = InlineKeyboardMarkup()

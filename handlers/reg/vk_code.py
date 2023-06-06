@@ -26,7 +26,7 @@ async def valid(event: types.Message, state: FSMContext):
     try:
         if int(event.text) == data['code']:
             await vk_finish(event, data['prof_id'])
-            await send_menu(event)
+            await send_menu(event, state)
         else:
             await event.answer(text="Код неверный!\n"
                                     "Попробуй ещё раз",

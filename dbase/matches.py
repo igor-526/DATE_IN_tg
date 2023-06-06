@@ -2,8 +2,7 @@ from models import Matchlist, Profile
 from dbase.tgtoid import get_profile_id
 
 
-async def count_matches(tg_id):
-    prof_id = await get_profile_id(tg_id)
+async def count_matches(prof_id):
     matches = await Matchlist.query.where(Matchlist.profile_1_id == prof_id).where(
         Matchlist.status == 'not_showed').gino.all()
     return len(matches)
