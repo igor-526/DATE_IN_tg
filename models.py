@@ -128,9 +128,9 @@ class Complaintlist(BaseModel):
 
 async def db_bind():
     await db.set_bind(config.POSTGRES_URI)
-    print("Connected to database")
+    print("Успешное подключение к базе данных")
 
 
 async def db_close():
     await db.pop_bind().close()
-    print("Connection to database closed")
+    print("Сессия работы с базой данных успешно закрыта")

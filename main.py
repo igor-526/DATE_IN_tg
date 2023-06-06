@@ -1,15 +1,21 @@
 from aiogram.utils import executor
 import urllib3
+import config
 from models import db_bind, db_close
 from create_bot import dp, bot
 
 
 async def on_startup(_):
-    print("Connecting to database...")
+    print("Подключение к базе данных..")
     await db_bind()
-    print("Bot started succesfully!")
     urllib3.disable_warnings()
-    await bot.set_webhook(WEBHOOK_DOMAIN, drop_pending_updates=True)
+    if config.WEBHOOK == 1:
+        await bot.set_webhook(config.WEBHOOK_DOMAIN, drop_pending_updates=True)
+        print("Режим WEBHOOK")
+        print(f"Установлен адрес {config.WEBHOOK_DOMAIN}")
+    else:
+        print("Режим LONGPOLL")
+    print("Бот запущен успешно\n__________")
 
 
 async def on_shutdown(_):
@@ -99,16 +105,17 @@ if __name__ == "__main__":
     register_handlers_viavk_id(dp)
     register_handlers_viavk_confirm(dp)
     register_handlers_viavk_code(dp)
-    WEBHOOK_DOMAIN = 'https://datein.ru/tgbot'
-    WEBAPP_HOST = '127.0.0.1'
-    WEBAPP_PORT = '3001'
-    # executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
-    executor.start_webhook(dispatcher=dp,
-                           webhook_path='',
-                           on_startup=on_startup,
-                           on_shutdown=on_shutdown,
-                           skip_updates=True,
-                           host=WEBAPP_HOST,
-                           port=WEBAPP_PORT)
+    if config.WEBHOOK == 1:
+        executor.start_webhook(dispatcher=dp,
+                               webhook_path='',
+                               on_startup=on_startup,
+                               on_shutdown=on_shutdown,
+                               skip_updates=True,
+                               host=config.WEBAPP_HOST,
+                               port=config.WEBAPP_PORT)
+    else:
+        executor.start_polling(dispatcher=dp,
+                               on_startup=on_startup,
+                               on_shutdown=on_shutdown)
 
 
