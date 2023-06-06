@@ -1,4 +1,5 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher import FSMContext
 from keyboards import profile_keys, sex_f_keys
 from FSM import Profile
 from dbase import upd_sex_f
@@ -6,27 +7,27 @@ from funcs import show_myprofile, do_invalid
 
 
 async def cancel(event: types.Message):
-    await event.answer(text="Выберите действие:",
+    await event.answer(text="Выбери фильтр:",
                        reply_markup=profile_keys)
-    await Profile.show.set()
+    await Profile.filters.set()
 
 
-async def set_male(event: types.Message):
+async def set_male(event: types.Message, state: FSMContext):
     await upd_sex_f(event.from_user.id, [2])
     await event.answer(text='Настройки поиска обновлены')
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
-async def set_female(event: types.Message):
+async def set_female(event: types.Message, state: FSMContext):
     await upd_sex_f(event.from_user.id, [1])
     await event.answer(text='Настройки поиска обновлены')
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
-async def set_all(event: types.Message):
+async def set_all(event: types.Message, state: FSMContext):
     await upd_sex_f(event.from_user.id, [1, 2])
     await event.answer(text='Настройки поиска обновлены')
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
 async def invalid(event: types.Message):

@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import profile_keys, cancel_keys
+from keyboards import filter_keys, cancel_keys
 from FSM import Profile
 from aiogram.dispatcher import FSMContext
 from dbase import upd_age_f
@@ -8,9 +8,9 @@ from funcs import show_myprofile
 
 
 async def cancel(event: types.Message):
-    await event.answer(text="Выберите действие:",
-                       reply_markup=profile_keys)
-    await Profile.show.set()
+    await event.answer(text="Выбери фильтр:",
+                       reply_markup=filter_keys)
+    await Profile.filters.set()
 
 
 async def valid_age_min(event: types.Message, state: FSMContext):
@@ -40,7 +40,7 @@ async def valid_age_max(event: types.Message, state: FSMContext):
         if validator == 'valid':
             await upd_age_f(event.from_user.id, data['age_min'], int(event.text))
             await event.answer(text="Настройки поиска обновлены!")
-            await show_myprofile(event)
+            await show_myprofile(event, state)
         elif validator == 'invalid':
             await event.answer(text='Я так не понимаю\n'
                                     'Просто напиши циферку',

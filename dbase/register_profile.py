@@ -14,7 +14,6 @@ async def uploadphotos(file_id: list):
 
 async def add_profile(tg_id: int,
                       tg_nick: str,
-                      tg_url: str,
                       name: str,
                       bdate: date,
                       sex: int,
@@ -22,8 +21,8 @@ async def add_profile(tg_id: int,
                       geo_lat: float,
                       geo_long: float,
                       description: str):
-    profile = Profile(tg_id=tg_id, tg_nick=tg_nick, tg_url=tg_url, name=name, bdate=bdate, sex=sex, city=city,
-                      description=description, status='active', geo_lat=geo_lat, geo_long=geo_long)
+    profile = Profile(tg_id=tg_id, tg_nick=tg_nick, name=name, bdate=bdate, sex=sex, city=city,
+                      description=description, status='active', geo_lat=geo_lat, geo_long=geo_long, limit=50)
     await profile.create()
     return profile.id
 
@@ -42,7 +41,7 @@ async def add_settings(tg_id: int,
     profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
     settings = Settings(profile_id=profile.id, age_min=age_min, age_max=age_max, find_m=find_m, find_f=find_f, purp1=purp1,
                         purp2=purp2, purp3=purp3, purp4=purp4, purp5=purp5, created=date.today(),
-                        last_usage=datetime.now())
+                        last_usage=datetime.now(), km_limit=15)
     await settings.create()
 
 

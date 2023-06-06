@@ -44,6 +44,7 @@ class Profile(StatesGroup):
     age_min = State()
     age_max = State()
     sex_f = State()
+    km_f = State()
     delete = State()
     desc_more = State()
     d_m_height = State()
@@ -52,6 +53,7 @@ class Profile(StatesGroup):
     d_m_children = State()
     d_m_animals = State()
     d_m_busy = State()
+    filters = State()
 
 
 class Search(StatesGroup):

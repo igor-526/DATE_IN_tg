@@ -14,19 +14,21 @@ from keyboards import (profile_keys,
                        children_keys,
                        busy_keys)
 from funcs.purposes import gen_purposes
-from dbase import dates_info, upd_c_photos
+from dbase import dates_info, upd_c_photos, get_profile_id
 from funcs.profile import generate_profile_forsettings
 
 
 async def do_invalid(event: types.Message, keys):
     await event.delete()
-    await event.answer(text="Я вас не понимаю &#128532;\n"
-                            "Пожалуйста, выберите действие на клавиатуре",
+    await event.answer(text="Я не понимаю &#128532;\n"
+                            "Пожалуйста, выбери действие на клавиатуре",
                        reply_markup=keys,
                        parse_mode=types.ParseMode.HTML)
 
 
-async def show_myprofile(event: types.Message):
+async def show_myprofile(event: types.Message, state: FSMContext):
+    pr_id = await get_profile_id(event.from_user.id)
+    await state.update_data({'pr_id': pr_id})
     profmsg = await generate_profile_forsettings(event.from_user.id)
     msg1 = 'Вот твой профиль:\n\n' + profmsg['msg1']
     if profmsg['att1']:
@@ -135,7 +137,7 @@ async def f_ch_add_photos(event: types.Message, state: FSMContext):
                                 f'(Макс. {11-count}. остальные не смогу добавить :( )',
                            reply_markup=readyback_keys)
         await Profile.add_photos.set()
-        await state.set_data({'photos': []})
+        await state.update_data({'photos': []})
 
 
 async def f_ch_age_f(event: types.Message):
@@ -150,6 +152,14 @@ async def f_ch_sex_f(event: types.Message):
     await event.answer(text="Кого будем искать?",
                        reply_markup=sex_f_keys)
     await Profile.sex_f.set()
+
+
+async def f_ch_dist(event: types.Message):
+    await event.delete()
+    await event.answer(text="В каком радиусе будем искать?\n"
+                            "В километрах",
+                       reply_markup=cancel_keys)
+    await Profile.km_f.set()
 
 
 async def f_ch_delete(event: types.Message):

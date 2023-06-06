@@ -88,9 +88,7 @@ async def updgeo(event: types.Message, state: FSMContext):
 
 
 async def profile(event: types.Message, state: FSMContext):
-    pr_id = await get_profile_id(event.from_user.id)
-    await state.update_data({'pr_id': pr_id})
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
 async def registration(event: types.Message):

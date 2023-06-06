@@ -1,15 +1,20 @@
 from aiogram.utils import executor
 import urllib3
-from models import db_bind
-from create_bot import dp
+from models import db_bind, db_close
+from create_bot import dp, bot
 
 
 async def on_startup(_):
     print("Connecting to database...")
     await db_bind()
-    print("Connected to database succesfully!\n")
     print("Bot started succesfully!")
     urllib3.disable_warnings()
+    await bot.set_webhook(WEBHOOK_DOMAIN, drop_pending_updates=True)
+
+
+async def on_shutdown(_):
+    await db_close()
+    await bot.delete_webhook()
 
 if __name__ == "__main__":
     from handlers import (register_handlers_menu,
@@ -51,7 +56,8 @@ if __name__ == "__main__":
                           register_handlers_prmd_animals,
                           register_handlers_commands,
                           register_handlers_updgeo,
-                          register_handlers_report)
+                          register_handlers_report,
+                          register_handlers_prch_dist)
     register_handlers_commands(dp)
     register_handlers_report(dp)
     register_handlers_menu(dp)
@@ -73,6 +79,7 @@ if __name__ == "__main__":
     register_handlers_prch_sex_f(dp)
     register_handlers_prch_more_desc(dp)
     register_handlers_prch_delprofile(dp)
+    register_handlers_prch_dist(dp)
     register_handlers_prmd_height(dp)
     register_handlers_prmd_habits(dp)
     register_handlers_prmd_children(dp)
@@ -92,5 +99,16 @@ if __name__ == "__main__":
     register_handlers_viavk_id(dp)
     register_handlers_viavk_confirm(dp)
     register_handlers_viavk_code(dp)
-    executor.start_polling(dp, on_startup=on_startup)
+    WEBHOOK_DOMAIN = 'https://tgbot.datein.ru/'
+    WEBAPP_HOST = '127.0.0.1'
+    WEBAPP_PORT = '3001'
+    # executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
+    executor.start_webhook(dispatcher=dp,
+                           webhook_path='',
+                           on_startup=on_startup,
+                           on_shutdown=on_shutdown,
+                           skip_updates=True,
+                           host=WEBAPP_HOST,
+                           port=WEBAPP_PORT)
+
 

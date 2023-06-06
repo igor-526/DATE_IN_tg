@@ -142,7 +142,6 @@ async def reg_finish(event: types.Message, state: FSMContext):
         async with state.proxy() as data:
             datelist = data['bdate'].split('.')
             pr_id = await add_profile(tg_id=event.from_user.id,
-                                      tg_url=event.from_user.url,
                                       tg_nick=event.from_user.username,
                                       name=data['name'],
                                       bdate=date(year=int(datelist[2]), month=int(datelist[1]), day=int(datelist[0])),

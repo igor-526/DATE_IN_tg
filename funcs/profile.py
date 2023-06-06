@@ -27,11 +27,12 @@ async def generate_profile_forsettings(tg_id):
         findsex = 'только парней'
     msg1 = f'&#127380;{profile["id"]}\n' \
            f'Имя: {profile["name"]}\n' \
-           f'Дата рождения: {profile["bdate"]}\n' \
+           f'Дата рождения: {profile["bdate"].strftime("%d.%m.%Y")}\n' \
            f'Город: {profile["city"]}\n' \
            f'Пол: {"мужской" if profile["sex"] == 2 else "женский"}\n' \
            f'Ты ищешь: {findsex}\n' \
            f'От {profile["age_min"]} до {profile["age_max"]} лет\n' \
+           f'На расстоянии {profile["dist"]} км\n' \
            f'Цели:\n'
     purposes = await get_purposes_from_list(profile['purposes'])
     for purpose in purposes:

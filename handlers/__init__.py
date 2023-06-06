@@ -22,6 +22,7 @@ from handlers.profile.prch_description import register_handlers_prch_description
 from handlers.profile.prch_photos import register_handlers_prch_photos
 from handlers.profile.prch_age_f import register_handlers_prch_age_f
 from handlers.profile.prch_sex_f import register_handlers_prch_sex_f
+from handlers.profile.prch_dist import register_handlers_prch_dist
 from handlers.profile.prch_more_desc import register_handlers_prch_more_desc
 from handlers.profile.prch_delprofile import register_handlers_prch_delprofile
 from handlers.profile.prmd_height import register_handlers_prmd_height

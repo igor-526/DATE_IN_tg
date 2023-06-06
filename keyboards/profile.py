@@ -9,13 +9,20 @@ b6 = KeyboardButton("Геопозиция")
 b7 = KeyboardButton("Описание")
 b8 = KeyboardButton("Удал. фото")
 b9 = KeyboardButton("Доб. фото")
-b10 = KeyboardButton("Изменить возраст поиска")
-b11 = KeyboardButton("Изменить пол поиска")
+b10 = KeyboardButton("Дополнительно")
+b11 = KeyboardButton("Фильтры")
 b12 = KeyboardButton("Удалить профиль")
-b13 = KeyboardButton("Дополнительно")
 
 profile_keys = ReplyKeyboardMarkup(resize_keyboard=True)
-profile_keys.add(b1).row(b2, b3).row(b4, b5).row(b6, b7).row(b8, b9).add(b13).add(b10).add(b11).add(b12)
+profile_keys.add(b1).row(b2, b3).row(b4, b5).row(b6, b7).row(b8, b9).row(b10, b11).add(b12)
+
+
+b1 = KeyboardButton("Возраст")
+b2 = KeyboardButton("Пол")
+b3 = KeyboardButton("Расстояние")
+b4 = KeyboardButton("Назад")
+filter_keys = ReplyKeyboardMarkup(resize_keyboard=True)
+filter_keys.row(b1, b2).row(b3, b4)
 
 
 ib1 = InlineKeyboardButton(text='Рост', callback_data='height')

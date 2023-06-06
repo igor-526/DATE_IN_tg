@@ -90,6 +90,11 @@ async def upd_age_f(tg_id, age_min, age_max):
     await settings.update(age_min=age_min, age_max=age_max).apply()
 
 
+async def upd_dist(prof_id, dist):
+    settings = await Settings.query.where(Settings.profile_id == prof_id).gino.first()
+    await settings.update(km_limit=dist).apply()
+
+
 async def upd_deactivate_profile(prof_id):
     profile = await Profile.query.where(Profile.id == prof_id).gino.first()
     settings = await Settings.query.where(Settings.profile_id == prof_id).gino.first()

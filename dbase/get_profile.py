@@ -64,7 +64,8 @@ async def get_prof_forsetting(tg_id):
               'description': profile.description, 'main_photo': main_photo, 'other_photos': images,
               'purposes': purposes, 'sex': profile.sex, 'age_min': settings.age_min, 'age_max': settings.age_max,
               'find_m': settings.find_m, 'find_f': settings.find_f, 'height': profile.height, 'habits': profile.habits,
-              'children': profile.children, 'busy': profile.busy, 'hobby': profile.hobby, 'animals': profile.animals}
+              'children': profile.children, 'busy': profile.busy, 'hobby': profile.hobby, 'animals': profile.animals,
+              'dist': settings.km_limit}
     return result
 
 

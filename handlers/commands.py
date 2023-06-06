@@ -4,6 +4,7 @@ from dbase import chk_reg, get_profile_id, del_profile
 from funcs import send_menu
 from FSM import Menu
 from keyboards import readyback_keys
+from create_bot import bot
 
 
 async def report(event: types.Message, state: FSMContext):
@@ -49,9 +50,15 @@ async def help(event: types.Message):
         await event.answer(text=file.read())
 
 
+async def check(event: types.Message):
+    nick = event.from_user.username
+    sets = await bot.get_chat(event.from_user.id)
+
+
 def register_handlers_commands(dp: Dispatcher):
     dp.register_message_handler(deleteprofile, commands=['deleteprofile'], state='*')
     dp.register_message_handler(report, commands=['report'], state='*')
+    dp.register_message_handler(check, commands=['check'], state='*')
     dp.register_message_handler(rules, commands=['rules'], state='*')
     dp.register_message_handler(reset, commands=['reset'], state='*')
     dp.register_message_handler(smenu, commands=['menu'], state='*')

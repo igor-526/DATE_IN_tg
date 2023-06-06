@@ -44,6 +44,7 @@ class Profile(BaseModel):
     hobby = Column(String, nullable=True)
     animals = Column(String, nullable=True)
     status = Column(String, nullable=False)
+    limit = Column(Integer, nullable=False)
 
     query: sql.select
 
@@ -67,6 +68,7 @@ class Settings(BaseModel):
     created = Column(Date, nullable=False)
     deactivated = Column(DateTime, nullable=True)
     last_usage = Column(DateTime, nullable=False)
+    km_limit = Column(Integer, nullable=False)
 
     query: sql.select
 
@@ -126,4 +128,9 @@ class Complaintlist(BaseModel):
 
 async def db_bind():
     await db.set_bind(config.POSTGRES_URI)
-    print("Connected to Database")
+    print("Connected to database")
+
+
+async def db_close():
+    await db.pop_bind().close()
+    print("Connection to database closed")
