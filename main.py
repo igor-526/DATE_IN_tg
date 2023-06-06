@@ -99,7 +99,7 @@ if __name__ == "__main__":
     register_handlers_viavk_id(dp)
     register_handlers_viavk_confirm(dp)
     register_handlers_viavk_code(dp)
-    WEBHOOK_DOMAIN = 'https://tgbot.datein.ru/'
+    WEBHOOK_DOMAIN = 'https://tgbot.datein.ru'
     WEBAPP_HOST = '127.0.0.1'
     WEBAPP_PORT = '3001'
     # executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
