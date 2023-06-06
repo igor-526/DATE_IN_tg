@@ -1,4 +1,5 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher import FSMContext
 from keyboards import profile_keys
 from FSM import Profile
 from dbase import upd_purposes
@@ -12,7 +13,7 @@ async def cancel(event: types.Message):
     await Profile.show.set()
 
 
-async def valid(event: types.Message):
+async def valid(event: types.Message, state: FSMContext):
     validator = await valid_purpose(event.text)
     if validator == 'invalid':
         await event.answer(text='Я так не понял\n'
@@ -20,7 +21,7 @@ async def valid(event: types.Message):
     else:
         await upd_purposes(event.from_user.id, validator)
         await event.answer(text="Успешно поменял!")
-        await show_myprofile(event)
+        await show_myprofile(event, state)
 
 
 def register_handlers_prch_purposes(dp: Dispatcher):

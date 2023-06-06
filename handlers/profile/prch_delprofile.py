@@ -19,9 +19,9 @@ async def yes(event: types.Message, state: FSMContext):
     await state.finish()
 
 
-async def no(event: types.Message):
+async def no(event: types.Message, state: FSMContext):
     await event.delete()
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
 async def invalid(event: types.Message):

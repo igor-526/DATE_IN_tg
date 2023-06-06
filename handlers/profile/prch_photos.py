@@ -13,10 +13,10 @@ async def no(event: types.Message):
     await Profile.show.set()
 
 
-async def yes(event: types.Message):
+async def yes(event: types.Message, state: FSMContext):
     await upd_del_photos(event.from_user.id)
     await event.answer(text="Удалил. Теперь ты можешь добавить 11 фотографий для профиля!")
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
 async def get_photos(event: types.PhotoSize, state: FSMContext):
@@ -36,7 +36,7 @@ async def ready(event: types.Message, state: FSMContext):
     upl.start()
     upl.join(0.0)
     await event.answer(text='Прекрасные фотографии! Добавил!')
-    await show_myprofile(event)
+    await show_myprofile(event, state)
 
 
 async def invalid_del(event: types.Message):

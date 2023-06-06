@@ -1,4 +1,5 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher import FSMContext
 from keyboards import profile_keys
 from FSM import Profile
 from dbase import upd_name
@@ -12,12 +13,12 @@ async def cancel(event: types.Message):
     await Profile.show.set()
 
 
-async def valid(event: types.Message):
+async def valid(event: types.Message, state: FSMContext):
     validator = await valid_name(event.text)
     if validator == 'valid':
         await upd_name(event.from_user.id, event.text)
         await event.answer(text="Успешно!")
-        await show_myprofile(event)
+        await show_myprofile(event, state)
     elif validator == 'short':
         await event.answer(text="Имя не может состоять из одного символа\nПопробуй ещё раз!")
     elif validator == 'long':
