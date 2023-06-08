@@ -8,6 +8,8 @@ async def generate_profile_forview(id, dist=None):
     bdate_info = await get_bdate_info(profile["bdate"])
     msg1 = f'{profile["name"]}, {bdate_info["age"]} (&#127380;{profile["id"]})\n'
     msg1 += f'{dist} км от тебя\n' if dist else ''
+    if dist == 0:
+        msg1 += f'0 км от тебя\n'
     msg1 += f'{profile["city"]}\n\nЦели:\n'
     purposes = await get_purposes_from_list(profile['purposes'])
     for purpose in purposes:
