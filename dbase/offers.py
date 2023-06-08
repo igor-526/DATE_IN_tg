@@ -32,6 +32,7 @@ async def profile_like(prof_id, offer_id):
         offer = await Offerlist.query.where(Offerlist.profile_id == prof_id).where(
             Offerlist.offer_id == offer_id).gino.first()
         await offer.update(status='like').apply()
+        await prof.update(limit=prof.limit - 1).apply()
         check_match = await Offerlist.query.where(Offerlist.profile_id == offer_id).where(
             Offerlist.offer_id == prof_id).where(Offerlist.status == 'like').gino.first()
         if check_match:
