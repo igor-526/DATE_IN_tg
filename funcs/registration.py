@@ -108,7 +108,7 @@ async def reg_ask_purposes(event: types.Message):
 
 async def reg_ask_f_sex(event: types.Message):
     await event.answer(text='С твоим профилем закончили!\nДавай теперь настроим поиск\n'
-                            'Тут гораздо меньше.\n')
+                            'Тут гораздо меньше')
     await event.answer(text='Кого мы будем искать?',
                        reply_markup=sex_f_keys)
     await Reg.f_sex.set()
@@ -174,7 +174,7 @@ async def reg_finish(event: types.Message, state: FSMContext):
         upl.start()
         upl.join(0.0)
         await event.answer(text="Ура! Всё получилось!\n"
-                                "Ты так же можешь добавить следующие данные о себе:",
+                                "Ты также можешь добавить следующие данные о себе:",
                            reply_markup=profilereg_inline_keys)
         await state.update_data({'pr_id': pr_id})
         await Profile.desc_more.set()

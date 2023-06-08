@@ -27,8 +27,11 @@ async def get_prof_forview(id):
     if settings.purp5 == 1:
         purposes.append(5)
     cont_vk = f'https://vk.com/id{profile.vk_id}' if profile.vk_id else None
-    userinfo = await bot.get_chat(profile.tg_id)
-    cont_tg = f'tg://user?id={profile.tg_id}' if not userinfo['has_private_forwards'] else None
+    if profile.tg_id:
+        userinfo = await bot.get_chat(profile.tg_id)
+        cont_tg = f'tg://user?id={profile.tg_id}' if not userinfo['has_private_forwards'] else None
+    else:
+        cont_tg = None
     result = {'id': profile.id, 'name': profile.name, 'city': profile.city, 'bdate': profile.bdate,
               'main_photo': main_photo,
               'purposes': purposes, 'cont_vk': cont_vk, 'cont_tg': cont_tg}

@@ -10,9 +10,14 @@ async def like_profile(event: types.Message, state: FSMContext):
     await event.delete()
     data = await state.get_data()
     match_status = await profile_like(data['id'], data['offer'])
-    await search(event, state)
-    if match_status == 'match':
+    if match_status == 'liked':
+        await search(event, state)
+    elif match_status == 'match':
+        await search(event, state)
         await event.answer(text='У тебя новый мэтч!\nПосмотреть контакты можно в меню')
+    elif match_status == 'limit':
+        await event.answer("Пока что с лайками всё\n"
+                           "Я тебе напишу, когда можно будет лайкать дальше")
 
 
 async def pass_profile(event: types.Message, state: FSMContext):
