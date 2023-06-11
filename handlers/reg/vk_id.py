@@ -1,5 +1,5 @@
 from aiogram import types, Dispatcher
-from keyboards import back_keys, yesno_keys
+from keyboards import back_keys, yesno_keys, vk_inline_keys
 from FSM import ViaVK
 from aiogram.dispatcher import FSMContext
 from funcs import start_registration, generate_profile_forview
@@ -18,25 +18,13 @@ async def valid(event: types.Message, state: FSMContext):
             raise
         await state.update_data(data={'prof_id': int(event.text), 'vk_id': vk_id})
         profmsg = await generate_profile_forview(int(event.text), 0)
-        msg1 = 'Нашёл! Это твой профиль?\n\n' + profmsg['msg1']
+        await event.answer(text='Нашёл! Это твой профиль?',
+                           reply_markup=yesno_keys)
         if profmsg['m_ph']:
-            await event.answer_photo(photo=profmsg['m_ph'], caption=msg1, parse_mode=types.ParseMode.HTML,
-                                     reply_markup=yesno_keys)
+            await event.answer_photo(photo=profmsg['m_ph'], caption=profmsg['msg1'], parse_mode=types.ParseMode.HTML,
+                                     reply_markup=vk_inline_keys)
         else:
-            await event.answer(text=msg1, parse_mode=types.ParseMode.HTML, reply_markup=yesno_keys)
-        if profmsg['o_ph']:
-            media = types.MediaGroup()
-            counter = 1
-            for photo in profmsg['o_ph']:
-                if counter == 1:
-                    media.attach_photo(photo=photo, caption=profmsg['msg2'])
-                    counter += 1
-                else:
-                    media.attach_photo(photo=photo)
-            await event.answer_media_group(media=media)
-        else:
-            if profmsg['msg2']:
-                await event.answer(profmsg['msg2'])
+            await event.answer(text=profmsg['msg1'], parse_mode=types.ParseMode.HTML, reply_markup=vk_inline_keys)
         await ViaVK.confirm.set()
     except:
         await event.answer(text="К сожеланию, профиль с таким id не найден\n"

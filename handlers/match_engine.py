@@ -78,11 +78,7 @@ async def complaint(event: types.CallbackQuery, state: FSMContext):
 def register_handlers_matches(dp: Dispatcher):
     dp.register_message_handler(next_new, state=Matches.new_matches, regexp='\U000025B6')
     dp.register_message_handler(show_old, state=Matches.new_matches, regexp='Просмотренные')
-    dp.register_callback_query_handler(all_photos, state=Matches.new_matches, text='all_photos')
-    dp.register_callback_query_handler(all_photos, state=Matches.old_matches, text='all_photos')
-    dp.register_callback_query_handler(description, state=Matches.new_matches, text='description')
     dp.register_callback_query_handler(complaint, state=Matches.new_matches, text='complaint')
-    dp.register_callback_query_handler(description, state=Matches.old_matches, text='description')
     dp.register_callback_query_handler(complaint, state=Matches.old_matches, text='complaint')
     dp.register_message_handler(menu, state=Matches.new_matches, regexp='Меню')
     dp.register_message_handler(menu, state=Matches.old_matches, regexp='Меню')

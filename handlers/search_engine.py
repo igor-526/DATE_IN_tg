@@ -64,7 +64,7 @@ async def complaint(event: types.CallbackQuery, state: FSMContext):
 def register_handlers_search(dp: Dispatcher):
     dp.register_message_handler(like_profile, state=Search.searching, regexp='\U00002764')
     dp.register_message_handler(pass_profile, state=Search.searching, regexp='\U0000274C')
-    dp.register_callback_query_handler(all_photos, state=Search.searching, text='all_photos')
-    dp.register_callback_query_handler(description, state=Search.searching, text='description')
+    dp.register_callback_query_handler(all_photos, state="*", text='all_photos')
+    dp.register_callback_query_handler(description, state="*", text='description')
     dp.register_callback_query_handler(complaint, state=Search.searching, text='complaint')
     dp.register_message_handler(menu, state=Search.searching, regexp='Меню')

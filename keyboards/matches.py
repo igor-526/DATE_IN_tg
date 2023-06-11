@@ -1,5 +1,4 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.exceptions import BadRequest
 
 b1 = KeyboardButton("Меню")
 b2 = KeyboardButton("\U000025B6")

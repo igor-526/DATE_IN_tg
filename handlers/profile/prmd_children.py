@@ -65,8 +65,8 @@ async def back(event: types.CallbackQuery):
 
 async def invalid(event: types.Message):
     await event.delete()
-    await event.answer(text="Я вас не понимаю &#128532;\n"
-                            "Пожалуйста, выберите действие на клавиатуре",
+    await event.answer(text="Я не понимаю &#128532;\n"
+                            "Пожалуйста, выбери действие на клавиатуре",
                        parse_mode=types.ParseMode.HTML)
 
 
