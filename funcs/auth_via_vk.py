@@ -8,9 +8,10 @@ import random
 
 
 async def vk_ask_id(event: types.Message):
-    await event.answer(text='Пожалуйста, введи id твоего профиля\n'
-                            'Найти его можно в настройках профиля',
-                       reply_markup=back_keys)
+    await event.answer_photo(caption='Пожалуйста, введи id твоего профиля\n'
+                                     'Найти его можно в настройках профиля',
+                             reply_markup=back_keys,
+                             photo='AgACAgIAAxkBAAJPJmSQUDxJ0uU83tjOghw2CZ1eahMHAAJ3zTEbbC-JSPjB9EA8v07yAQADAgADeQADLwQ')
     await ViaVK.id.set()
 
 

@@ -69,10 +69,11 @@ async def reg_ask_sex(event: types.Message):
 
 async def reg_ask_geo(event: types.Message):
     await event.answer(text='Мне нужно знать твоё местоположение\n'
-                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе\n'
-                            'Ты можешь отправить мне примерное местоположение с помощью вложения\n'
-                            'В любом случае, оно останется только между нами!',
+                            'Это необходимо для того, чтобы подбирать тебе анкеты поближе',
                        reply_markup=geo_keys)
+    await event.answer_photo(photo='AgACAgIAAxkBAAJPJ2SQUGQ4mxwMH01aAAHWEdWHBd1K-wACe80xG2wviUjLtfG8TP5ajwEAAwIAA3kAAy8E',
+                             caption='Ты можешь отправить мне примерное местоположение с помощью вложения\n'
+                                     'В любом случае, оно останется только между нами!')
     await Reg.geo.set()
 
 

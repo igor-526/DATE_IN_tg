@@ -105,9 +105,12 @@ async def f_ch_purposes(event: types.Message):
 
 async def f_ch_geo(event: types.Message):
     await event.delete()
-    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили сначала поближе!\n"
-                            "Можно отправить гео через вложения, если хочется отправить приерное местоположение",
+    await event.answer(text="Отправьте мне своё местоположение, чтобы я смог подбирать профили сначала поближе!",
                        reply_markup=geo_keys)
+    await event.answer_photo(
+        photo='AgACAgIAAxkBAAJPJ2SQUGQ4mxwMH01aAAHWEdWHBd1K-wACe80xG2wviUjLtfG8TP5ajwEAAwIAA3kAAy8E',
+        caption='Ты можешь отправить мне примерное местоположение с помощью вложения\n'
+                'В любом случае, оно останется только между нами!')
     await Profile.geo.set()
 
 

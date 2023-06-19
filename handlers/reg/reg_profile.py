@@ -1,5 +1,4 @@
 from aiogram import types, Dispatcher
-from dbase import chk_reg
 from keyboards import reg_profile_keys
 from FSM import Reg
 from funcs import do_invalid, reg_ask_name, vk_ask_id

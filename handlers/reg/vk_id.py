@@ -27,9 +27,10 @@ async def valid(event: types.Message, state: FSMContext):
             await event.answer(text=profmsg['msg1'], parse_mode=types.ParseMode.HTML, reply_markup=vk_inline_keys)
         await ViaVK.confirm.set()
     except:
-        await event.answer(text="К сожеланию, профиль с таким id не найден\n"
-                                "Убедитесь, что вы вводите id профиля DATE IN, а не ВК",
-                           reply_markup=back_keys)
+        await event.answer_photo(caption="К сожеланию, профиль с таким id не найден\n"
+                                         "Убедись, что вводишь id профиля DATE IN, а не ВК",
+                                 reply_markup=back_keys,
+                                 photo='AgACAgIAAxkBAAJPJmSQUDxJ0uU83tjOghw2CZ1eahMHAAJ3zTEbbC-JSPjB9EA8v07yAQADAgADeQADLwQ')
 
 
 def register_handlers_viavk_id(dp: Dispatcher):

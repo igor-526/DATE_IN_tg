@@ -42,7 +42,7 @@ async def get_prof_forsetting(tg_id):
     profile = await Profile.query.where(Profile.tg_id == tg_id).gino.first()
     settings = await Settings.query.where(Settings.profile_id == profile.id).gino.first()
     photos = await Images.query.where(Images.profile_id == profile.id).where(
-        Images.description == 'profile_photo').gino.all()
+        Images.description == 'profile_photo').order_by('id').gino.all()
     counter = 0
     images = []
     main_photo = None
@@ -74,7 +74,7 @@ async def get_prof_forsetting(tg_id):
 
 async def get_photos(pr_id):
     photos = await Images.query.where(Images.profile_id == pr_id).where(
-        Images.description == 'profile_photo').gino.all()
+        Images.description == 'profile_photo').order_by('id').gino.all()
     result = []
     for photo in photos:
         result.append(photo.tg_id if photo.tg_id else photo.url)
